@@ -1,12 +1,12 @@
 <div align="center">
 
-# 🤖 cp-kit
+# 🤖 cp-toolkit
 
 **GitHub Copilot Agent Toolkit**
 
 *Initialize and manage AI agents for GitHub Copilot, Claude, Gemini CLI, and other AI assistants.*
 
-[![npm version](https://img.shields.io/npm/v/cp-kit.svg)](https://www.npmjs.com/package/cp-kit)
+[![npm version](https://img.shields.io/npm/v/cp-toolkit.svg)](https://www.npmjs.com/package/cp-toolkit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
@@ -19,13 +19,13 @@
 
 ---
 
-## 🎯 What is cp-kit?
+## 🎯 What is cp-toolkit?
 
-**cp-kit** is a CLI tool that bootstraps AI agent configurations for your projects. It creates a standardized structure that GitHub Copilot and other AI assistants understand, making them smarter and more context-aware when working with your codebase.
+**cp-toolkit** is a CLI tool that bootstraps AI agent configurations for your projects. It creates a standardized structure that GitHub Copilot and other AI assistants understand, making them smarter and more context-aware when working with your codebase.
 
 Think of it as **ESLint for AI** — it defines rules, specialists, and behaviors that AI assistants follow when helping you code.
 
-### Why cp-kit?
+### Why cp-toolkit?
 
 - 🚀 **Instant Setup** — One command to configure 20+ specialized AI agents
 - 🎯 **Context-Aware AI** — Path-specific instructions make AI understand your code better
@@ -39,14 +39,14 @@ Think of it as **ESLint for AI** — it defines rules, specialists, and behavior
 
 `ash
 # Install globally
-npm install -g cp-kit
+npm install -g cp-toolkit
 
 # Initialize in your project
 cd your-project
-cp-kit init
+cp-toolkit init
 
 # Or use with npx (no install needed)
-npx cp-kit init
+npx cp-toolkit init
 `
 
 That's it! Your project now has AI-powered agent configurations.
@@ -197,7 +197,7 @@ After initialization, invoke agents in Copilot Chat:
 
 ## 🤝 Contributing
 
-We'd love your help making cp-kit better! Here are some ways to contribute:
+We'd love your help making cp-toolkit better! Here are some ways to contribute:
 
 ### 🐛 Report Bugs
 
@@ -227,7 +227,7 @@ Documentation improvements are always welcome! Fix typos, add examples, or clari
 Create specialized agents for new domains:
 
 `ash
-cp-kit add agent rust-specialist
+cp-toolkit add agent rust-specialist
 # Then edit .github/agents/rust-specialist.md
 `
 
@@ -238,17 +238,17 @@ Share your agents by submitting a PR to add them to the default set!
 Help developers in other languages:
 
 `ash
-cp-kit add instruction golang
-cp-kit add instruction kotlin
-cp-kit add instruction swift
+cp-toolkit add instruction golang
+cp-toolkit add instruction kotlin
+cp-toolkit add instruction swift
 `
 
 ---
 
 ## 🗺️ Roadmap
 
-- [ ] `cp-kit sync` — Sync with remote agent repositories
-- [ ] `cp-kit upgrade` — Update agents to latest versions
+- [ ] `cp-toolkit sync` — Sync with remote agent repositories
+- [ ] `cp-toolkit upgrade` — Update agents to latest versions
 - [ ] Plugin system for custom MCP servers
 - [ ] VS Code extension for visual management
 - [ ] AI-powered agent suggestions based on codebase analysis
@@ -264,7 +264,7 @@ MIT © 2026 [gensart-projs](https://github.com/gensart-projs)
 
 <div align="center">
 
-**⭐ Star us on GitHub if cp-kit helps you!**
+**⭐ Star us on GitHub if cp-toolkit helps you!**
 
 Made with ❤️ for the AI-assisted development community
 
