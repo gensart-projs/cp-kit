@@ -16,20 +16,20 @@ npx cp-toolkit init
 
 ```bash
 # Initialize in current directory
-cp-kit init
+cp-toolkit init
 
 # Initialize in new directory
-cp-kit init my-project
+cp-toolkit init my-project
 
 # Skip prompts (use defaults)
-cp-kit init -y
+cp-toolkit init -y
 ```
 
 ## Commands
 
-### `cp-kit init [directory]`
+### `cp-toolkit init [directory]`
 
-Initialize cp-kit with GitHub Copilot 2026 structure:
+Initialize cp-toolkit with GitHub Copilot 2026 structure:
 
 ```
 .github/
@@ -51,34 +51,34 @@ Options:
 - `-y, --yes` - Skip prompts, use defaults
 - `-f, --force` - Overwrite existing configuration
 
-### `cp-kit add <type> <name>`
+### `cp-toolkit add <type> <name>`
 
 Add new components:
 
 ```bash
 # Add a new agent
-cp-kit add agent my-specialist
+cp-toolkit add agent my-specialist
 
 # Add a new instruction
-cp-kit add instruction golang
+cp-toolkit add instruction golang
 ```
 
-### `cp-kit list [type]`
+### `cp-toolkit list [type]`
 
 List available components:
 
 ```bash
-cp-kit list agents       # List all agents
-cp-kit list instructions # List all instructions
-cp-kit list all          # List everything
+cp-toolkit list agents       # List all agents
+cp-toolkit list instructions # List all instructions
+cp-toolkit list all          # List everything
 ```
 
-### `cp-kit doctor`
+### `cp-toolkit doctor`
 
 Check configuration and diagnose issues:
 
 ```bash
-cp-kit doctor
+cp-toolkit doctor
 ```
 
 ## GitHub Copilot Integration
