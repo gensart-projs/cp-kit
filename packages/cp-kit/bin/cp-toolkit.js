@@ -20,17 +20,25 @@
 
 import { Command } from 'commander';
 import chalk from 'chalk';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { initCommand } from '../src/commands/init.js';
 import { addCommand } from '../src/commands/add.js';
 import { listCommand } from '../src/commands/list.js';
 import { doctorCommand } from '../src/commands/doctor.js';
 
+// Get version from package.json
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const packageJson = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf8'));
+
 const program = new Command();
 
 program
-  .name('cp-kit')
+  .name('cp-toolkit')
   .description('GitHub Copilot Agent Toolkit - Initialize AI agents for your project')
-  .version('1.0.0');
+  .version(packageJson.version);
 
 // cp-kit init [directory]
 program
