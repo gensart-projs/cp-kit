@@ -6,10 +6,10 @@
 
 ```bash
 # Global install
-npm install -g cp-kit
+npm install -g @brainlifyai/cp-kit
 
 # Or use with npx
-npx cp-kit init
+npx @brainlifyai/cp-kit init
 ```
 
 ## Quick Start

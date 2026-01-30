@@ -1,5 +1,5 @@
 {
-  "name": "cp-kit",
+  "name": "@brainlifyai/cp-kit",
   "version": "1.0.0",
   "description": "Copilot Kit - AI Agent framework for GitHub Copilot, Claude, Gemini CLI, and other AI assistants",
   "keywords": [
@@ -16,7 +16,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nuvemtalk/cp-kit"
+    "url": "https://github.com/gensart-projs/cp-kit"
   },
   "type": "module",
   "bin": {
@@ -30,9 +30,8 @@
     "README.md"
   ],
   "scripts": {
-    "start": "node bin/cp-kit.js",
     "test": "node --test src/**/*.test.js",
-    "prepublishOnly": "node scripts/prepare-templates.js"
+    "start": "node bin/cp-kit.js"
   },
   "dependencies": {
     "commander": "^12.0.0",
