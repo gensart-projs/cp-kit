@@ -1,0 +1,47 @@
+{
+  "name": "cp-kit",
+  "version": "1.0.0",
+  "description": "Copilot Kit - AI Agent framework for GitHub Copilot, Claude, Gemini CLI, and other AI assistants",
+  "keywords": [
+    "ai-agents",
+    "github-copilot",
+    "copilot",
+    "gemini-cli",
+    "claude",
+    "mcp",
+    "model-context-protocol",
+    "agent-toolkit"
+  ],
+  "author": "NuvemTalk",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nuvemtalk/cp-kit"
+  },
+  "type": "module",
+  "bin": {
+    "cp-kit": "./bin/cp-kit.js"
+  },
+  "main": "./src/index.js",
+  "files": [
+    "bin",
+    "src",
+    "templates",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "node bin/cp-kit.js",
+    "test": "node --test src/**/*.test.js",
+    "prepublishOnly": "node scripts/prepare-templates.js"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "chalk": "^5.3.0",
+    "ora": "^8.0.0",
+    "prompts": "^2.4.2",
+    "fs-extra": "^11.2.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

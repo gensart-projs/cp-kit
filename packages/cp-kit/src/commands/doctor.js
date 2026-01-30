@@ -1,0 +1,149 @@
+/**
+ * cp-kit doctor command
+ * 
+ * Diagnose cp-kit configuration and suggest fixes.
+ */
+
+import fs from 'fs-extra';
+import path from 'path';
+import chalk from 'chalk';
+
+const CHECKS = [
+  {
+    name: '.github/ directory exists',
+    check: async (dir) => fs.pathExists(path.join(dir, '.github')),
+    fix: 'Run: cp-kit init'
+  },
+  {
+    name: 'copilot-instructions.md exists',
+    check: async (dir) => fs.pathExists(path.join(dir, '.github', 'copilot-instructions.md')),
+    fix: 'Run: cp-kit init'
+  },
+  {
+    name: 'agents/ directory exists',
+    check: async (dir) => fs.pathExists(path.join(dir, '.github', 'agents')),
+    fix: 'Run: cp-kit init'
+  },
+  {
+    name: 'At least one agent defined',
+    check: async (dir) => {
+      const agentsDir = path.join(dir, '.github', 'agents');
+      if (!await fs.pathExists(agentsDir)) return false;
+      const files = await fs.readdir(agentsDir);
+      return files.some(f => f.endsWith('.md'));
+    },
+    fix: 'Run: cp-kit add agent <name>'
+  },
+  {
+    name: 'instructions/ directory exists',
+    check: async (dir) => fs.pathExists(path.join(dir, '.github', 'instructions')),
+    fix: 'Run: cp-kit init'
+  },
+  {
+    name: 'At least one instruction defined',
+    check: async (dir) => {
+      const instrDir = path.join(dir, '.github', 'instructions');
+      if (!await fs.pathExists(instrDir)) return false;
+      const files = await fs.readdir(instrDir);
+      return files.some(f => f.endsWith('.instructions.md'));
+    },
+    fix: 'Run: cp-kit add instruction <name>'
+  },
+  {
+    name: 'AGENTS.md exists at root',
+    check: async (dir) => fs.pathExists(path.join(dir, 'AGENTS.md')),
+    fix: 'Run: cp-kit init'
+  },
+  {
+    name: '.vscode/mcp.json exists',
+    check: async (dir) => fs.pathExists(path.join(dir, '.vscode', 'mcp.json')),
+    optional: true,
+    fix: 'Run: cp-kit init (with MCP option)'
+  },
+  {
+    name: 'Instructions have valid applyTo',
+    check: async (dir) => {
+      const instrDir = path.join(dir, '.github', 'instructions');
+      if (!await fs.pathExists(instrDir)) return true;
+      const files = await fs.readdir(instrDir);
+      for (const file of files.filter(f => f.endsWith('.instructions.md'))) {
+        const content = await fs.readFile(path.join(instrDir, file), 'utf-8');
+        if (!content.includes('applyTo:')) return false;
+      }
+      return true;
+    },
+    fix: 'Add applyTo frontmatter to instruction files'
+  },
+  {
+    name: 'Agents have valid frontmatter',
+    check: async (dir) => {
+      const agentsDir = path.join(dir, '.github', 'agents');
+      if (!await fs.pathExists(agentsDir)) return true;
+      const files = await fs.readdir(agentsDir);
+      for (const file of files.filter(f => f.endsWith('.md'))) {
+        const content = await fs.readFile(path.join(agentsDir, file), 'utf-8');
+        if (!content.startsWith('---')) return false;
+        if (!content.includes('name:')) return false;
+      }
+      return true;
+    },
+    fix: 'Add frontmatter with name: to agent files'
+  }
+];
+
+export async function doctorCommand() {
+  const targetDir = process.cwd();
+  
+  console.log('');
+  console.log(chalk.bold.cyan('🩺 cp-kit Doctor'));
+  console.log(chalk.gray('─'.repeat(50)));
+  console.log(chalk.gray(`Checking: ${targetDir}`));
+  console.log('');
+  
+  let passed = 0;
+  let failed = 0;
+  let warnings = 0;
+  
+  for (const check of CHECKS) {
+    try {
+      const result = await check.check(targetDir);
+      
+      if (result) {
+        console.log(chalk.green('  ✓ ') + check.name);
+        passed++;
+      } else if (check.optional) {
+        console.log(chalk.yellow('  ⚠ ') + check.name + chalk.gray(' (optional)'));
+        warnings++;
+      } else {
+        console.log(chalk.red('  ✗ ') + check.name);
+        if (check.fix) {
+          console.log(chalk.gray('    ' + check.fix));
+        }
+        failed++;
+      }
+    } catch (error) {
+      console.log(chalk.red('  ✗ ') + check.name + chalk.gray(` (${error.message})`));
+      failed++;
+    }
+  }
+  
+  console.log('');
+  console.log(chalk.gray('─'.repeat(50)));
+  
+  if (failed === 0) {
+    if (warnings > 0) {
+      console.log(chalk.green.bold(`✓ All checks passed!`) + chalk.gray(` (${passed} passed, ${warnings} optional)`));
+    } else {
+      console.log(chalk.green.bold(`✓ All checks passed! (${passed}/${passed})`));
+    }
+    console.log('');
+    console.log(chalk.green('✨ cp-kit is healthy!'));
+  } else {
+    console.log(chalk.red.bold(`✗ ${failed} checks failed`) + chalk.gray(` (${passed} passed, ${warnings} optional)`));
+    console.log('');
+    console.log(chalk.yellow('Run suggested fixes above.'));
+  }
+  console.log('');
+}
+
+export default doctorCommand;
