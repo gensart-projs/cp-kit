@@ -108,49 +108,49 @@ Out-of-the-box Model Context Protocol support for VS Code:
 
 ## 🛠️ Commands
 
-### `cp-kit init [directory]`
+### `cp-toolkit init [directory]`
 
-Initialize cp-kit in a project:
+Initialize cp-toolkit in a project:
 
 `ash
-cp-kit init              # Current directory
-cp-kit init my-project   # New directory
-cp-kit init -y           # Skip prompts, use defaults
-cp-kit init -f           # Force overwrite existing
+cp-toolkit init              # Current directory
+cp-toolkit init my-project   # New directory
+cp-toolkit init -y           # Skip prompts, use defaults
+cp-toolkit init -f           # Force overwrite existing
 `
 
-### `cp-kit add <type> <name>`
+### `cp-toolkit add <type> <name>`
 
 Add new components:
 
 `ash
-cp-kit add agent my-specialist      # Add custom agent
-cp-kit add instruction golang       # Add language instruction
+cp-toolkit add agent my-specialist      # Add custom agent
+cp-toolkit add instruction golang       # Add language instruction
 `
 
-### `cp-kit list [type]`
+### `cp-toolkit list [type]`
 
 List available components:
 
 `ash
-cp-kit list agents        # List all agents
-cp-kit list instructions  # List all instructions
-cp-kit list all           # List everything
+cp-toolkit list agents        # List all agents
+cp-toolkit list instructions  # List all instructions
+cp-toolkit list all           # List everything
 `
 
-### `cp-kit doctor`
+### `cp-toolkit doctor`
 
 Diagnose configuration:
 
 `ash
-cp-kit doctor
+cp-toolkit doctor
 # ✓ .github/ directory exists
 # ✓ copilot-instructions.md exists
 # ✓ 20 agents found
 # ✓ 5 instructions found
 # ✓ AGENTS.md exists at root
 # ✓ .vscode/mcp.json exists
-# ✨ cp-kit is healthy!
+# ✨ cp-toolkit is healthy!
 `
 
 ---
@@ -201,14 +201,14 @@ We'd love your help making cp-toolkit better! Here are some ways to contribute:
 
 ### 🐛 Report Bugs
 
-Found a bug? [Open an issue](https://github.com/gensart-projs/cp-kit/issues/new) with:
+Found a bug? [Open an issue](https://github.com/gensart-projs/cp-toolkit/issues/new) with:
 - Your OS and Node.js version
 - Steps to reproduce
 - Expected vs actual behavior
 
 ### 💡 Suggest Features
 
-Have an idea? We're all ears! [Start a discussion](https://github.com/gensart-projs/cp-kit/discussions) or open an issue.
+Have an idea? We're all ears! [Start a discussion](https://github.com/gensart-projs/cp-toolkit/discussions) or open an issue.
 
 ### 🔧 Submit PRs
 
