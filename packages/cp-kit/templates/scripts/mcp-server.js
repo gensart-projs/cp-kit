@@ -29,7 +29,7 @@ import {
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
-const AGENT_ROOT = process.env.AGENT_ROOT || path.join(process.cwd(), '.agent');
+const AGENT_ROOT = process.env.AGENT_ROOT || path.join(process.cwd(), '.github');
 
 // ============================================================================
 // HELPERS

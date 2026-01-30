@@ -147,6 +147,14 @@ export async function initCommand(directory, options) {
           ],
           "disabled": false,
           "autoApprove": []
+        },
+        "antigravity": {
+          "command": "node",
+          "args": [
+            "${workspaceFolder}/.github/scripts/mcp-server.js"
+          ],
+          "disabled": false,
+          "autoApprove": []
         }
       }
     };
@@ -167,6 +175,32 @@ export async function initCommand(directory, options) {
       }
     }
 
+    // 8. Copy scripts to .github/scripts/
+    spinner.text = 'Copying scripts...';
+    const scriptsSourceDir = path.join(templatesDir, 'scripts');
+    const scriptsTargetDir = path.join(targetDir, '.github', 'scripts');
+    if (fs.existsSync(scriptsSourceDir)) {
+      await fs.ensureDir(scriptsTargetDir);
+      await fs.copy(scriptsSourceDir, scriptsTargetDir, { overwrite: true });
+    }
+
+    // 9. Copy ARCHITECTURE.md to .github/
+    spinner.text = 'Copying architecture documentation...';
+    const architectureSource = path.join(templatesDir, 'ARCHITECTURE.md');
+    const architectureTarget = path.join(targetDir, '.github', 'ARCHITECTURE.md');
+    if (fs.existsSync(architectureSource)) {
+      await fs.copy(architectureSource, architectureTarget, { overwrite: true });
+    }
+
+    // 10. Copy rules to .github/rules/
+    spinner.text = 'Copying rules...';
+    const rulesSourceDir = path.join(templatesDir, 'rules');
+    const rulesTargetDir = path.join(targetDir, '.github', 'rules');
+    if (fs.existsSync(rulesSourceDir)) {
+      await fs.ensureDir(rulesTargetDir);
+      await fs.copy(rulesSourceDir, rulesTargetDir, { overwrite: true });
+    }
+
     spinner.succeed(chalk.green('✨ Copilot Kit initialized successfully!'));
     
     console.log(chalk.bold('\n📁 Created structure:'));
@@ -175,6 +209,9 @@ export async function initCommand(directory, options) {
     console.log(chalk.dim('   ├── skills/           ') + chalk.cyan('← Essential skills library'));
     console.log(chalk.dim('   ├── instructions/     ') + chalk.cyan('← Language-specific rules'));
     console.log(chalk.dim('   ├── copilot-workflows/') + chalk.cyan('← Workflow templates'));
+    console.log(chalk.dim('   ├── scripts/          ') + chalk.cyan('← MCP server & utilities'));
+    console.log(chalk.dim('   ├── rules/            ') + chalk.cyan('← Global AI rules'));
+    console.log(chalk.dim('   ├── ARCHITECTURE.md   ') + chalk.cyan('← System documentation'));
     console.log(chalk.dim('   └── copilot-instructions.md'));
     console.log(chalk.dim('   .vscode/'));
     console.log(chalk.dim('   └── mcp.json          ') + chalk.cyan('← MCP server config'));
