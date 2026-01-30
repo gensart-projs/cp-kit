@@ -91,13 +91,38 @@ export async function initCommand(directory, options) {
     // Create standard instruction files
     await createInstructionFiles(instructionsTargetDir);
     
-    // 3. Setup .github/copilot-instructions.md
+    // 4. Setup .github/skills/ (essential skills referenced by agents)
+    spinner.text = 'Copying essential skills...';
+    const skillsTargetDir = path.join(targetDir, '.github', 'skills');
+    await fs.ensureDir(skillsTargetDir);
+    
+    // Copy essential skills that agents reference
+    const essentialSkills = [
+      'mobile-design',
+      'frontend-design', 
+      'api-patterns',
+      'database-design',
+      'testing-patterns',
+      'deployment-procedures',
+      'architecture'
+    ];
+    
+    for (const skill of essentialSkills) {
+      const skillSourceDir = path.join(templatesDir, 'skills', 'optional', skill);
+      if (fs.existsSync(skillSourceDir)) {
+        const skillTargetDir = path.join(skillsTargetDir, skill);
+        await fs.ensureDir(skillTargetDir);
+        await fs.copy(skillSourceDir, skillTargetDir, { overwrite: true });
+      }
+    }
+    
+    // 5. Setup .github/copilot-instructions.md
     spinner.text = 'Creating copilot-instructions.md...';
     const instructionsPath = path.join(targetDir, '.github', 'copilot-instructions.md');
     const instructionsContent = generateCopilotInstructions(config);
     await fs.writeFile(instructionsPath, instructionsContent);
 
-    // 4. Setup .vscode/mcp.json
+    // 6. Setup .vscode/mcp.json
     spinner.text = 'Configuring MCP Server...';
     const vscodeDir = path.join(targetDir, '.vscode');
     await fs.ensureDir(vscodeDir);
@@ -131,7 +156,7 @@ export async function initCommand(directory, options) {
       JSON.stringify(mcpConfig, null, 2)
     );
 
-    // 5. Copy workflows to .github/workflows-copilot/ (optional reference)
+    // 7. Copy workflows to .github/workflows-copilot/ (optional reference)
     if (config.installEverything) {
       spinner.text = 'Copying workflows...';
       const workflowsSourceDir = path.join(templatesDir, 'workflows');
@@ -147,6 +172,7 @@ export async function initCommand(directory, options) {
     console.log(chalk.bold('\n📁 Created structure:'));
     console.log(chalk.dim('   .github/'));
     console.log(chalk.dim('   ├── agents/           ') + chalk.cyan('← 20 specialist agents'));
+    console.log(chalk.dim('   ├── skills/           ') + chalk.cyan('← Essential skills library'));
     console.log(chalk.dim('   ├── instructions/     ') + chalk.cyan('← Language-specific rules'));
     console.log(chalk.dim('   ├── copilot-workflows/') + chalk.cyan('← Workflow templates'));
     console.log(chalk.dim('   └── copilot-instructions.md'));
