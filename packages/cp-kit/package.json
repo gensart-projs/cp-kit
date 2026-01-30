@@ -1,6 +1,6 @@
 {
   "name": "cp-toolkit",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Copilot Toolkit - AI Agent framework for GitHub Copilot, Claude, Gemini CLI, and other AI assistants",
   "keywords": [
     "ai-agents",

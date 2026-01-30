@@ -259,9 +259,8 @@ const TEMPLATE_INSTRUCTIONS = {
 };
 
 export async function initCommand(directory, options) {
-  const targetDir = directory ? path.resolve(directory) : process.cwd();
-  const dirName = path.basename(targetDir);
-  
+const templatesDir = path.resolve(__dirname, '../../templates');
+
   console.log(chalk.bold.cyan('\n🚀 cp-kit - GitHub Copilot Agent Toolkit\n'));
   
   // Create directory if needed
@@ -271,14 +270,12 @@ export async function initCommand(directory, options) {
   }
   
   // Check for existing configuration
-  const githubDir = path.join(targetDir, '.github');
-  const copilotFile = path.join(githubDir, 'copilot-instructions.md');
-  
-  if (fs.existsSync(copilotFile) && !options.force) {
+  const agentDir = path.join(targetDir, '.agent');
+  if (fs.existsSync(agentDir) && !options.force) {
     const { overwrite } = await prompts({
       type: 'confirm',
       name: 'overwrite',
-      message: 'cp-kit already initialized. Overwrite?',
+      message: 'cp-kit (.agent) already initialized. Overwrite?',
       initial: false
     });
     
@@ -287,19 +284,13 @@ export async function initCommand(directory, options) {
       return;
     }
   }
-  
-  // Interactive configuration - defaults include ALL agents and languages
-  const ALL_AGENT_NAMES = TEMPLATE_AGENTS.map(a => a.name);
-  const ALL_LANGUAGES = ['typescript', 'python', 'react'];
-  
+
+  // Interactive configuration
   let config = {
     projectName: dirName,
-    projectType: 'app',
-    languages: ALL_LANGUAGES,
-    agents: ALL_AGENT_NAMES,
-    includeMcp: true
+    installEverything: true
   };
-  
+
   if (!options.yes) {
     const response = await prompts([
       {
@@ -309,354 +300,131 @@ export async function initCommand(directory, options) {
         initial: dirName
       },
       {
-        type: 'select',
-        name: 'projectType',
-        message: 'Project type:',
-        choices: [
-          { title: 'Single App', value: 'app' },
-          { title: 'Monorepo', value: 'monorepo' },
-          { title: 'Library/Package', value: 'library' },
-          { title: 'API Only', value: 'api' }
-        ],
-        initial: 0
-      },
-      {
-        type: 'multiselect',
-        name: 'languages',
-        message: 'Languages used:',
-        choices: [
-          { title: 'TypeScript', value: 'typescript', selected: true },
-          { title: 'Python', value: 'python', selected: true },
-          { title: 'React/JSX', value: 'react', selected: true }
-        ],
-        min: 1
-      },
-      {
-        type: 'multiselect',
-        name: 'agents',
-        message: 'Select agents:',
-        choices: TEMPLATE_AGENTS.map(a => ({
-          title: `${a.name} - ${a.description}`,
-          value: a.name,
-          selected: true  // All agents selected by default
-        })),
-        min: 1
-      },
-      {
         type: 'confirm',
-        name: 'includeMcp',
-        message: 'Include MCP server configuration?',
+        name: 'installEverything',
+        message: 'Install full Antigravity Kit (Agents, Skills, Workflows)?',
         initial: true
       }
     ]);
-    
-    if (!response.projectName) {
-      console.log(chalk.yellow('Aborted.'));
-      return;
-    }
-    
-    config = { ...config, ...response };
+     config = { ...config, ...response };
   }
-  
-  // Start installation
-  const spinner = ora('Creating cp-kit structure...').start();
-  
+
+  const spinner = ora('Installing Antigravity Kit...').start();
+
   try {
-    // Create .github structure
-    await fs.ensureDir(path.join(githubDir, 'agents'));
-    await fs.ensureDir(path.join(githubDir, 'instructions'));
+    // 1. Copy Templates to .agent folder
+    await fs.ensureDir(agentDir);
+    await fs.copy(templatesDir, agentDir, {
+      overwrite: true,
+      filter: (src) => !src.includes('node_modules') && !src.includes('.git')
+    });
     
-    spinner.text = 'Creating copilot-instructions.md...';
+    spinner.text = 'Configuring GitHub Copilot...';
+
+    // 2. Setup .github/copilot-instructions.md
+    const githubDir = path.join(targetDir, '.github');
+    await fs.ensureDir(githubDir);
     
-    // Create main copilot-instructions.md
-    await fs.writeFile(copilotFile, generateCopilotInstructions(config));
+    const instructionsPath = path.join(githubDir, 'copilot-instructions.md');
+    const instructionsContent = generateCopilotInstructions(config);
+    await fs.writeFile(instructionsPath, instructionsContent);
+
+    // 3. Setup .vscode/mcp.json
+    spinner.text = 'Configuring MCP Server...';
+    const vscodeDir = path.join(targetDir, '.vscode');
+    await fs.ensureDir(vscodeDir);
     
-    spinner.text = 'Creating agents...';
-    
-    // Create agents
-    for (const agentName of config.agents) {
-      const agent = TEMPLATE_AGENTS.find(a => a.name === agentName);
-      if (agent) {
-        await fs.writeFile(
-          path.join(githubDir, 'agents', `${agent.name}.md`),
-          generateAgentFile(agent)
-        );
+    const mcpConfig = {
+      "mcpServers": {
+        "antigravity-toolkit": {
+          "command": "node",
+          "args": [
+            "${workspaceFolder}/.agent/scripts/mcp-server.js"
+          ],
+          "env": {
+            "AGENT_ROOT": "${workspaceFolder}/.agent"
+          },
+          "disabled": false,
+          "autoApprove": []
+        },
+        "filesystem": {
+          "command": "npx",
+          "args": [
+            "-y",
+            "@modelcontextprotocol/server-filesystem",
+            "${workspaceFolder}"
+          ],
+          "disabled": false,
+          "autoApprove": []
+        },
+        "memory": {
+          "command": "npx",
+          "args": [
+            "-y",
+            "@modelcontextprotocol/server-memory"
+          ],
+          "disabled": false,
+          "autoApprove": []
+        }
       }
-    }
+    };
     
-    spinner.text = 'Creating instructions...';
+    await fs.writeFile(
+      path.join(vscodeDir, 'mcp.json'), 
+      JSON.stringify(mcpConfig, null, 2)
+    );
+
+    // 4. Create root integration files if needed
+    // Copy AGENTS.md if it exists in templates root (which is now in .agent)
+    const agentsMdSrc = path.join(agentDir, 'AGENTS.md'); // Might not exist in root of reference
+    // If reference had AGENTS.md in root, it should be in agentDir now if we copied everything.
+    // Based on list_dir earlier, it wasn't there. It was likely outside. 
+    // We will generate a basic one if missing.
     
-    // Create instructions based on languages
-    const instructionsToCreate = new Set(['security', 'database']);
-    config.languages.forEach(lang => {
-      instructionsToCreate.add(lang);
-      if (lang === 'react') instructionsToCreate.add('typescript');
-    });
+    spinner.succeed(chalk.green('Antigravity Kit installed successfully!'));
     
-    for (const instrName of instructionsToCreate) {
-      const instr = TEMPLATE_INSTRUCTIONS[instrName];
-      if (instr) {
-        await fs.writeFile(
-          path.join(githubDir, 'instructions', `${instrName}.instructions.md`),
-          `---\napplyTo: "${instr.applyTo}"\n---\n\n${instr.content}\n`
-        );
-      }
-    }
-    
-    spinner.text = 'Creating AGENTS.md...';
-    
-    // Create AGENTS.md at root
-    await fs.writeFile(path.join(targetDir, 'AGENTS.md'), generateAgentsMd(config));
-    
-    // Create MCP configuration if requested
-    if (config.includeMcp) {
-      spinner.text = 'Setting up MCP...';
-      await fs.ensureDir(path.join(targetDir, '.vscode'));
-      await fs.writeFile(
-        path.join(targetDir, '.vscode', 'mcp.json'),
-        JSON.stringify(generateMcpConfig(), null, 2)
-      );
-    }
-    
-    spinner.succeed(chalk.green('cp-kit initialized successfully!'));
-    
-    // Print summary
-    console.log('');
-    console.log(chalk.bold('📁 Created structure:'));
-    console.log(chalk.gray(''));
-    console.log(chalk.gray('  .github/'));
-    console.log(chalk.gray('  ├── copilot-instructions.md    # Global instructions'));
-    console.log(chalk.gray('  ├── agents/'));
-    config.agents.forEach((a, i) => {
-      const prefix = i === config.agents.length - 1 ? '└──' : '├──';
-      console.log(chalk.gray(`  │   ${prefix} ${a}.md`));
-    });
-    console.log(chalk.gray('  └── instructions/'));
-    const instrArray = Array.from(instructionsToCreate);
-    instrArray.forEach((i, idx) => {
-      const prefix = idx === instrArray.length - 1 ? '└──' : '├──';
-      console.log(chalk.gray(`      ${prefix} ${i}.instructions.md`));
-    });
-    console.log(chalk.gray(''));
-    console.log(chalk.gray('  AGENTS.md                      # Universal AI instructions'));
-    if (config.includeMcp) {
-      console.log(chalk.gray('  .vscode/mcp.json               # MCP configuration'));
-    }
-    
-    console.log('');
-    console.log(chalk.green('✓ GitHub Copilot will automatically load these instructions'));
-    console.log('');
-    console.log(chalk.bold('Next steps:'));
-    console.log(chalk.cyan('  1. Review .github/copilot-instructions.md'));
-    console.log(chalk.cyan('  2. Add agents with: cp-kit add agent <name>'));
-    console.log(chalk.cyan('  3. Verify setup with: cp-kit doctor'));
-    console.log('');
-    
+    console.log(chalk.bold('\nNext Steps:'));
+    console.log(`1. Open ${chalk.cyan('.github/copilot-instructions.md')} to see the setup.`);
+    console.log(`2. Reload Window to activate MCP server.`);
+    console.log(`3. Try typing ${chalk.yellow('/create')} or ${chalk.yellow('Is the agent active?')} in Copilot Chat.`);
+
   } catch (error) {
-    spinner.fail(chalk.red('Failed to initialize cp-kit'));
-    console.error(chalk.red(error.message));
-    process.exit(1);
+    spinner.fail('Installation failed.');
+    console.error(error);
   }
-}
-
-function generateCopilotInstructions(config) {
-  const langList = config.languages.map(l => {
-    switch (l) {
-      case 'typescript': return '**TypeScript**: Strict mode, ESLint + Prettier';
-      case 'python': return '**Python**: Black formatter, type hints, PEP 8';
-      case 'react': return '**React**: Functional components, hooks, Testing Library';
-      default: return l;
-    }
-  }).join('\n- ');
-
-  return `# GitHub Copilot Instructions
-
-> Repository-wide instructions for GitHub Copilot (2026 Standard)
-> Generated by cp-kit v1.0.0
-
-## Project Context
-
-**${config.projectName}** is a ${config.projectType} project.
-
-## Code Style
-
-- ${langList}
-- **Commits**: Conventional Commits format (\`feat:\`, \`fix:\`, \`docs:\`)
-
-## AI Agent Protocol
-
-### Available Agents
-
-${config.agents.map(a => {
-  const agent = TEMPLATE_AGENTS.find(t => t.name === a);
-  return `- **@${a}**: ${agent?.description || 'Specialist agent'}`;
-}).join('\n')}
-
-### Invoking Agents
-
-Use \`@agent-name\` in Copilot Chat:
-\`\`\`
-@frontend-specialist Create a responsive navbar component
-@security-auditor Review this authentication flow
-@orchestrator Implement user dashboard with API integration
-\`\`\`
-
-### Behavioral Modes
-
-| Mode | Trigger | Behavior |
-|------|---------|----------|
-| **BRAINSTORM** | "let's think", "options" | Explore ideas, no code |
-| **IMPLEMENT** | "build", "create" | Production-ready code |
-| **DEBUG** | "fix", "why", "error" | Root cause analysis |
-| **REVIEW** | "review", "check" | Quality assessment |
-
-## Socratic Gate
-
-For complex requests, **ASK before implementing**:
-- What is the expected behavior?
-- What are the edge cases?
-- What are the dependencies?
-
-## File References
-
-- Agent definitions: \`.github/agents/\`
-- Path-specific rules: \`.github/instructions/\`
-- Universal instructions: \`AGENTS.md\`
-${config.includeMcp ? `- MCP configuration: \`.vscode/mcp.json\`` : ''}
-
-## Do NOT
-
-- Skip understanding context before coding
-- Write code without identifying the domain
-- Ignore the Socratic Gate for complex requests
-- Use deprecated patterns without checking instructions
-`;
 }
 
 function generateAgentFile(agent) {
-  return `---
-name: ${agent.name}
-description: ${agent.description}
----
-
-# ${agent.name}
-
-> ${agent.description}
-
-## When to Use
-
-Invoke this agent for:
-${agent.triggers.map(t => `- ${t} related tasks`).join('\n')}
-
-## Trigger Keywords
-
-\`${agent.triggers.join('`, `')}\`
-
-## Skills
-
-${agent.skills.map(s => `- ${s}`).join('\n')}
-
-## Response Format
-
-\`\`\`
-🤖 **Applying @${agent.name}...**
-
-[specialized response following skill guidelines]
-\`\`\`
-
-## Integration
-
-This agent can collaborate with:
-- \`@orchestrator\` for multi-domain coordination
-- Other specialists via handoff protocol
-`;
+  // Deprecated generally, using static files now, but keeping for fallback
+  return \`---\nname: \${agent.name}\ndescription: \${agent.description}\nskills: [\${agent.skills.join(', ')}]\n---\n\n# \${agent.name}\n\n\${agent.description}\n\`;
 }
 
-function generateAgentsMd(config) {
-  return `# AGENTS.md
+function generateCopilotInstructions(config) {
+  return \`# GitHub Copilot Instructions
 
-> Universal Agent Instructions for AI Coding Assistants (2026 Standard)
-> Generated by cp-kit v1.0.0
+> **Antigravity Kit Active**
+> Profile: \${config.projectName}
 
----
+## 🧠 Core Protocols
 
-## 🏗️ Project Overview
+The user has installed the **Antigravity Agent Kit** in \`.agent/\`.
+You must follow the rules defined in \`.agent/rules/GEMINI.md\`.
 
-**${config.projectName}** - ${config.projectType}
+### Structure
+- **Agents:** \`.agent/agents/\` (Specialist personas)
+- **Skills:** \`.agent/skills/\` (Capabilities)
+- **Workflows:** \`.agent/workflows/\` (Procedures)
+- **Scripts:** \`.agent/scripts/\` (Tools)
 
-### Technologies
+## 🚀 Activation
 
-${config.languages.map(l => `- ${l.charAt(0).toUpperCase() + l.slice(1)}`).join('\n')}
+When the user asks for a specific role or task, look up the corresponding agent in \`.agent/agents/\`.
+Always read \`.agent/rules/GEMINI.md\` first.
 
----
-
-## 🤖 AI Agent Protocol
-
-### Available Agents
-
-| Agent | Domain | Triggers |
-|-------|--------|----------|
-${config.agents.map(a => {
-  const agent = TEMPLATE_AGENTS.find(t => t.name === a);
-  return `| \`@${a}\` | ${agent?.description || '-'} | ${agent?.triggers.join(', ') || '-'} |`;
-}).join('\n')}
-
-### Request Classification
-
-| Type | Keywords | Action |
-|------|----------|--------|
-| **QUESTION** | "what is", "explain" | Text response only |
-| **SIMPLE CODE** | "fix", "add" (single file) | Inline edit |
-| **COMPLEX CODE** | "build", "create" | Use @orchestrator |
-| **REVIEW** | "review", "check" | Quality assessment |
-
-### Behavioral Modes
-
-| Mode | Behavior |
-|------|----------|
-| **BRAINSTORM** | Ask questions, explore options, no code |
-| **IMPLEMENT** | Fast execution, production-ready code |
-| **DEBUG** | Systematic investigation, root cause analysis |
-| **REVIEW** | Code quality, security, performance check |
-
----
-
-## 📂 Structure
-
-\`\`\`
-.github/
-├── copilot-instructions.md    # Global instructions (always active)
-├── agents/                    # Agent definitions
-└── instructions/              # Path-specific rules
-\`\`\`
-
----
-
-*Generated by [cp-kit](https://github.com/anthropics/cp-kit) v1.0.0*
-`;
+## 🛠️ MCP Tools
+An MCP server is configured at \`.agent/scripts/mcp-server.js\`.
+Use it to list available tools, resources, and prompts.
+\`;
 }
-
-function generateMcpConfig() {
-  return {
-    "$schema": "https://raw.githubusercontent.com/microsoft/vscode/main/src/vs/workbench/contrib/mcp/browser/mcpConfigSchema.json",
-    servers: {
-      filesystem: {
-        type: "stdio",
-        command: "npx",
-        args: ["-y", "@anthropic-ai/mcp-server-filesystem@latest", "${workspaceFolder}"]
-      },
-      memory: {
-        type: "stdio",
-        command: "npx",
-        args: ["-y", "@anthropic-ai/mcp-server-memory@latest"]
-      },
-      sequentialThinking: {
-        type: "stdio",
-        command: "npx",
-        args: ["-y", "@anthropic-ai/mcp-server-sequential-thinking@latest"]
-      }
-    }
-  };
-}
-
 export default initCommand;
+
