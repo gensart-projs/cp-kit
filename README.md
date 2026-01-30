@@ -8,14 +8,31 @@
 
 [![npm version](https://img.shields.io/npm/v/cp-toolkit.svg)](https://www.npmjs.com/package/cp-toolkit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)](https://nodejs.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-[Getting Started](#-quick-start) •
+[Quick Start](#-quick-start) •
+[Project Types](#-project-types) •
 [Features](#-features) •
 [Commands](#-commands) •
 [Contributing](#-contributing)
 
 </div>
+
+---
+
+## 📋 Table of Contents
+
+- [What is cp-toolkit?](#-what-is-cp-toolkit)
+- [Quick Start](#-quick-start)
+- [Project Types](#-project-types)
+- [Features](#-features)
+- [Commands](#-commands)
+- [Generated Structure](#-generated-structure)
+- [Usage with GitHub Copilot](#-usage-with-github-copilot)
+- [Contributing](#-contributing)
+- [Roadmap](#️-roadmap)
+- [License](#-license)
 
 ---
 
@@ -27,57 +44,104 @@ Think of it as **ESLint for AI** — it defines rules, specialists, and behavior
 
 ### Why cp-toolkit?
 
-- 🚀 **Instant Setup** — One command to configure 20+ specialized AI agents
-- 🎯 **Context-Aware AI** — Path-specific instructions make AI understand your code better
-- 🔌 **MCP Ready** — Built-in Model Context Protocol support for VS Code
-- 📦 **Zero Lock-in** — Standard markdown files, works with any AI assistant
-- 🛠️ **Extensible** — Add custom agents and instructions for your domain
+| Feature | Description |
+|---------|-------------|
+| 🚀 **Instant Setup** | One command to configure 20+ specialized AI agents |
+| 🎯 **Context-Aware AI** | Path-specific instructions make AI understand your code better |
+| 🔌 **MCP Ready** | Built-in Model Context Protocol support for VS Code |
+| 📦 **Zero Lock-in** | Standard markdown files, works with any AI assistant |
+| 🛠️ **Extensible** | Add custom agents and instructions for your domain |
 
 ---
 
 ## 📦 Quick Start
 
-`ash
+### Installation
+
+```bash
 # Install globally
 npm install -g cp-toolkit
 
-# Initialize in your project
-cd your-project
-cp-toolkit init
-
 # Or use with npx (no install needed)
 npx cp-toolkit init
-`
+```
 
-That's it! Your project now has AI-powered agent configurations.
+### Initialize your project
+
+```bash
+cd your-project
+cp-toolkit init
+```
+
+You'll be prompted to select your project type and name. That's it! Your project now has AI-powered agent configurations.
+
+---
+
+## 🏗️ Project Types
+
+When running `cp-toolkit init`, you'll be asked to choose a project type. Each type optimizes the agent configuration for your use case:
+
+### Single App
+
+Standard single application project.
+
+- **Best for:** Websites, web apps, standalone applications
+- **Structure:** Agents configured at project root
+- **Examples:** Next.js app, React SPA, Express server
+
+### Monorepo
+
+Multi-package repository with shared configurations.
+
+- **Best for:** Turborepo, Nx, Lerna, npm/pnpm workspaces
+- **Structure:** Root-level agents + per-package customization possible
+- **Examples:** Design system + docs + app, microservices
+
+### Library/Package
+
+Publishable package or library.
+
+- **Best for:** npm packages, SDKs, frameworks, component libraries
+- **Focus:** Documentation, testing, API design, compatibility
+- **Examples:** UI component library, utility package, SDK
+
+### API Only
+
+Backend-only project without frontend.
+
+- **Best for:** REST APIs, GraphQL servers, microservices
+- **Focus:** Backend, database, security, and DevOps agents
+- **Examples:** Express API, FastAPI, NestJS backend
 
 ---
 
 ## ✨ Features
 
-### 🤖 20 Specialized Agents
+### 🤖 20+ Specialized Agents
 
 Each agent is an expert in a specific domain:
 
-| Agent | Domain | Triggers |
-|-------|--------|----------|
-| `@orchestrator` | Multi-domain coordination | complex, architecture |
-| `@frontend-specialist` | React, Next.js, CSS | ui, component, styling |
-| `@backend-specialist` | Node.js, Python, APIs | api, server, endpoint |
-| `@database-architect` | SQL, Prisma, schemas | database, migration |
-| `@security-auditor` | OWASP, vulnerabilities | security, auth |
-| `@test-engineer` | Jest, Playwright, TDD | test, coverage |
-| `@debugger` | Troubleshooting | bug, error, fix |
-| `@devops-engineer` | CI/CD, Docker, K8s | deploy, pipeline |
-| `@performance-optimizer` | Core Web Vitals | speed, optimize |
-| `@mobile-developer` | React Native, Flutter | mobile, ios, android |
-| ... | *and 10 more specialists* | |
+| Agent | Domain | Use Cases |
+|-------|--------|-----------|
+| `@orchestrator` | Multi-domain coordination | Complex features, architecture decisions |
+| `@frontend-specialist` | React, Next.js, CSS | UI components, styling, accessibility |
+| `@backend-specialist` | Node.js, Python, APIs | Server logic, endpoints, middleware |
+| `@database-architect` | SQL, Prisma, schemas | Data modeling, migrations, optimization |
+| `@security-auditor` | OWASP, vulnerabilities | Auth, input validation, security review |
+| `@test-engineer` | Jest, Playwright, TDD | Unit tests, E2E tests, coverage |
+| `@debugger` | Troubleshooting | Bug fixes, error analysis, debugging |
+| `@devops-engineer` | CI/CD, Docker, K8s | Pipelines, containers, deployment |
+| `@performance-optimizer` | Core Web Vitals | Speed optimization, profiling |
+| `@mobile-developer` | React Native, Flutter | Mobile apps, cross-platform |
+| `@documentation-writer` | Technical docs | README, API docs, guides |
+| `@code-archaeologist` | Legacy code | Refactoring, understanding old code |
+| ... | *and more specialists* | |
 
 ### 📋 Path-Specific Instructions
 
 Instructions are automatically applied based on file patterns:
 
-`yaml
+```yaml
 # .github/instructions/typescript.instructions.md
 ---
 applyTo: "**/*.ts,**/*.tsx"
@@ -87,13 +151,13 @@ applyTo: "**/*.ts,**/*.tsx"
 - Enable strict mode
 - No `any` types
 - Use discriminated unions
-`
+```
 
 ### 🔌 MCP Integration
 
 Out-of-the-box Model Context Protocol support for VS Code:
 
-`json
+```json
 // .vscode/mcp.json (auto-generated)
 {
   "servers": {
@@ -102,7 +166,7 @@ Out-of-the-box Model Context Protocol support for VS Code:
     "sequentialThinking": { ... }
   }
 }
-`
+```
 
 ---
 
@@ -110,80 +174,100 @@ Out-of-the-box Model Context Protocol support for VS Code:
 
 ### `cp-toolkit init [directory]`
 
-Initialize cp-toolkit in a project:
+Initialize cp-toolkit in a project.
 
-`ash
-cp-toolkit init              # Current directory
+```bash
+cp-toolkit init              # Current directory (interactive)
 cp-toolkit init my-project   # New directory
 cp-toolkit init -y           # Skip prompts, use defaults
-cp-toolkit init -f           # Force overwrite existing
-`
+cp-toolkit init -f           # Force overwrite existing config
+```
+
+**Options:**
+
+| Flag | Description |
+|------|-------------|
+| `-y, --yes` | Skip all prompts, use default values |
+| `-f, --force` | Overwrite existing configuration files |
 
 ### `cp-toolkit add <type> <name>`
 
-Add new components:
+Add new components to your project.
 
-`ash
-cp-toolkit add agent my-specialist      # Add custom agent
-cp-toolkit add instruction golang       # Add language instruction
-`
+```bash
+cp-toolkit add agent rust-specialist     # Add custom agent
+cp-toolkit add instruction golang        # Add language instruction
+```
+
+**Types:**
+
+- `agent` - Create a new specialized agent
+- `instruction` - Create path-specific instructions
 
 ### `cp-toolkit list [type]`
 
-List available components:
+List available components.
 
-`ash
-cp-toolkit list agents        # List all agents
-cp-toolkit list instructions  # List all instructions
-cp-toolkit list all           # List everything
-`
+```bash
+cp-toolkit list              # List everything
+cp-toolkit list agents       # List all agents
+cp-toolkit list instructions # List all instructions
+```
 
 ### `cp-toolkit doctor`
 
-Diagnose configuration:
+Diagnose your configuration and check for issues.
 
-`ash
+```bash
 cp-toolkit doctor
-# ✓ .github/ directory exists
-# ✓ copilot-instructions.md exists
-# ✓ 20 agents found
-# ✓ 5 instructions found
-# ✓ AGENTS.md exists at root
-# ✓ .vscode/mcp.json exists
-# ✨ cp-toolkit is healthy!
-`
+```
+
+**Example output:**
+
+```
+✓ .github/ directory exists
+✓ copilot-instructions.md exists
+✓ 20 agents found
+✓ 5 instructions found
+✓ AGENTS.md exists at root
+✓ .vscode/mcp.json exists
+✨ cp-toolkit is healthy!
+```
 
 ---
 
 ## 📂 Generated Structure
 
-`
+After running `cp-toolkit init`, your project will have:
+
+```
 your-project/
 ├── .github/
-│   ├── copilot-instructions.md    # Global AI instructions
+│   ├── copilot-instructions.md    # Global AI instructions (always active)
 │   ├── agents/                    # Agent definitions
 │   │   ├── orchestrator.md
 │   │   ├── frontend-specialist.md
 │   │   ├── backend-specialist.md
-│   │   └── ... (20 agents)
+│   │   ├── database-architect.md
+│   │   ├── security-auditor.md
+│   │   └── ... (20+ agents)
 │   └── instructions/              # Path-specific rules
 │       ├── typescript.instructions.md
 │       ├── python.instructions.md
-│       ├── react.instructions.md
 │       ├── database.instructions.md
 │       └── security.instructions.md
 ├── .vscode/
 │   └── mcp.json                   # MCP server configuration
 └── AGENTS.md                      # Universal AI instructions
-`
+```
 
 ---
 
 ## 🎮 Usage with GitHub Copilot
 
-After initialization, invoke agents in Copilot Chat:
+After initialization, invoke agents in GitHub Copilot Chat using `@agent-name`:
 
-`
+```
 @frontend-specialist Create a responsive navbar with dark mode toggle
 
 @security-auditor Review this authentication middleware for vulnerabilities
@@ -191,24 +275,33 @@ After initialization, invoke agents in Copilot Chat:
 @orchestrator Implement a user dashboard with profile settings and activity feed
 
 @database-architect Design a schema for a multi-tenant SaaS application
-`
+
+@test-engineer Write comprehensive tests for the UserService class
+```
+
+### Tips
+
+- Use `@orchestrator` for complex, multi-domain tasks
+- Combine agents: ask `@security-auditor` to review code written by `@backend-specialist`
+- Path-specific instructions activate automatically based on the file you're editing
 
 ---
 
 ## 🤝 Contributing
 
-We'd love your help making cp-toolkit better! Here are some ways to contribute:
+We'd love your help making cp-toolkit better!
 
 ### 🐛 Report Bugs
 
-Found a bug? [Open an issue](https://github.com/gensart-projs/cp-toolkit/issues/new) with:
+Found a bug? [Open an issue](https://github.com/gensart-projs/cp-kit/issues/new) with:
+
 - Your OS and Node.js version
 - Steps to reproduce
 - Expected vs actual behavior
 
 ### 💡 Suggest Features
 
-Have an idea? We're all ears! [Start a discussion](https://github.com/gensart-projs/cp-toolkit/discussions) or open an issue.
+Have an idea? [Start a discussion](https://github.com/gensart-projs/cp-kit/discussions) or open an issue.
 
 ### 🔧 Submit PRs
 
@@ -218,30 +311,26 @@ Have an idea? We're all ears! [Start a discussion](https://github.com/gensart-pr
 4. Push to the branch: `git push origin feature/amazing-feature`
 5. Open a Pull Request
 
-### 📝 Improve Documentation
-
-Documentation improvements are always welcome! Fix typos, add examples, or clarify explanations.
-
 ### 🤖 Add New Agents
 
 Create specialized agents for new domains:
 
-`ash
+```bash
 cp-toolkit add agent rust-specialist
 # Then edit .github/agents/rust-specialist.md
-`
+```
 
-Share your agents by submitting a PR to add them to the default set!
+Share your agents by submitting a PR!
 
 ### 🌍 Add Language Instructions
 
-Help developers in other languages:
+Help developers with new language support:
 
-`ash
+```bash
 cp-toolkit add instruction golang
 cp-toolkit add instruction kotlin
 cp-toolkit add instruction swift
-`
+```
 
 ---
 
@@ -267,5 +356,7 @@ MIT © 2026 [gensart-projs](https://github.com/gensart-projs)
 **⭐ Star us on GitHub if cp-toolkit helps you!**
 
 Made with ❤️ for the AI-assisted development community
+
+[Report Bug](https://github.com/gensart-projs/cp-kit/issues) · [Request Feature](https://github.com/gensart-projs/cp-kit/issues) · [Discussions](https://github.com/gensart-projs/cp-kit/discussions)
 
 </div>
