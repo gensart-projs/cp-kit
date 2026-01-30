@@ -259,9 +259,11 @@ const TEMPLATE_INSTRUCTIONS = {
 };
 
 export async function initCommand(directory, options) {
-const templatesDir = path.resolve(__dirname, '../../templates');
+  const targetDir = directory ? path.resolve(directory) : process.cwd();
+  const dirName = path.basename(targetDir);
+  const templatesDir = path.join(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '../../templates');
 
-  console.log(chalk.bold.cyan('\n🚀 cp-kit - GitHub Copilot Agent Toolkit\n'));
+  console.log(chalk.bold.cyan('\n🚀 cp-toolkit - GitHub Copilot Agent Toolkit\n'));
   
   // Create directory if needed
   if (directory && !fs.existsSync(targetDir)) {
@@ -275,7 +277,7 @@ const templatesDir = path.resolve(__dirname, '../../templates');
     const { overwrite } = await prompts({
       type: 'confirm',
       name: 'overwrite',
-      message: 'cp-kit (.agent) already initialized. Overwrite?',
+      message: 'cp-toolkit (.agent) already initialized. Overwrite?',
       initial: false
     });
     
@@ -302,14 +304,14 @@ const templatesDir = path.resolve(__dirname, '../../templates');
       {
         type: 'confirm',
         name: 'installEverything',
-        message: 'Install full Antigravity Kit (Agents, Skills, Workflows)?',
+        message: 'Install full Copilot Kit (Agents, Skills, Workflows)?',
         initial: true
       }
     ]);
      config = { ...config, ...response };
   }
 
-  const spinner = ora('Installing Antigravity Kit...').start();
+  const spinner = ora('Installing Copilot Kit...').start();
 
   try {
     // 1. Copy Templates to .agent folder
@@ -381,7 +383,7 @@ const templatesDir = path.resolve(__dirname, '../../templates');
     // Based on list_dir earlier, it wasn't there. It was likely outside. 
     // We will generate a basic one if missing.
     
-    spinner.succeed(chalk.green('Antigravity Kit installed successfully!'));
+    spinner.succeed(chalk.green('Copilot Kit installed successfully!'));
     
     console.log(chalk.bold('\nNext Steps:'));
     console.log(`1. Open ${chalk.cyan('.github/copilot-instructions.md')} to see the setup.`);
@@ -396,18 +398,27 @@ const templatesDir = path.resolve(__dirname, '../../templates');
 
 function generateAgentFile(agent) {
   // Deprecated generally, using static files now, but keeping for fallback
-  return \`---\nname: \${agent.name}\ndescription: \${agent.description}\nskills: [\${agent.skills.join(', ')}]\n---\n\n# \${agent.name}\n\n\${agent.description}\n\`;
+  return `---
+name: ${agent.name}
+description: ${agent.description}
+skills: [${agent.skills.join(', ')}]
+---
+
+# ${agent.name}
+
+${agent.description}
+`;
 }
 
 function generateCopilotInstructions(config) {
-  return \`# GitHub Copilot Instructions
+  return `# GitHub Copilot Instructions
 
-> **Antigravity Kit Active**
-> Profile: \${config.projectName}
+> **Copilot Kit Active**
+> Profile: ${config.projectName}
 
 ## 🧠 Core Protocols
 
-The user has installed the **Antigravity Agent Kit** in \`.agent/\`.
+The user has installed the **Copilot Kit** in \`.agent/\`.
 You must follow the rules defined in \`.agent/rules/GEMINI.md\`.
 
 ### Structure
@@ -424,7 +435,9 @@ Always read \`.agent/rules/GEMINI.md\` first.
 ## 🛠️ MCP Tools
 An MCP server is configured at \`.agent/scripts/mcp-server.js\`.
 Use it to list available tools, resources, and prompts.
-\`;
+`;
 }
+
 export default initCommand;
+
 

@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+reference_antigravity_agent
 
 # Build outputs
 dist/
