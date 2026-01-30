@@ -1,6 +1,6 @@
 {
   "name": "cp-toolkit",
-  "version": "2.0.0",
+  "version": "2.0.3",
   "description": "Copilot Toolkit - AI Agent framework for GitHub Copilot, Claude, Gemini CLI, and other AI assistants",
   "keywords": [
     "ai-agents",
@@ -16,11 +16,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gensart-projs/cp-kit"
+    "url": "git+https://github.com/gensart-projs/cp-kit.git"
   },
   "type": "module",
   "bin": {
-    "cp-kit": "./bin/cp-kit.js"
+    "cp-toolkit": "bin/cp-toolkit.js"
   },
   "main": "./src/index.js",
   "files": [
