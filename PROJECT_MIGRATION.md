@@ -31,6 +31,7 @@ O cp-kit implementa um sistema sofisticado de agentes especializados:
 ├── workflows/        # Templates de workflow
 ├── scripts/          # Servidores MCP e utilitários
 ├── rules/           # Regras globais de IA
+├── cp-kit-models.yaml # Matriz de alocação de modelos IA
 └── copilot-instructions.md
 .vscode/
 └── mcp.json         # Configuração MCP
@@ -67,10 +68,39 @@ O cp-kit implementa um sistema sofisticado de agentes especializados:
 9. **Documentation Writer**: Geração de documentação técnica
 10. **Code Archaeologist**: Análise e refatoração de código legado
 
+### Matriz de Modelos IA (cp-kit-models.yaml)
+O sistema implementa uma alocação inteligente de modelos de IA baseada na especialidade de cada agente:
+
+#### Liderança e Estratégia
+- **Orchestrator**: GPT-5.2 (raciocínio mestre para coordenação complexa)
+- **Product Manager**: Claude Opus 4.5 (empatia com usuário e visão estratégica)
+- **Project Planner**: GPT-5 (estruturação lógica para cronogramas)
+
+#### Desenvolvimento Core
+- **Backend Specialist**: GPT-5.2 Codex (lógica de servidor e APIs)
+- **Frontend Specialist**: Claude Sonnet 4.5 (CSS/React com precisão visual)
+- **Game Developer**: GPT-5.1 Codex Max (física e matemática vetorial)
+
+#### Qualidade e Segurança
+- **Security Auditor**: GPT-5.2 (análise profunda de vulnerabilidades)
+- **Penetration Tester**: GPT-5.2 Codex (criatividade de ataque + código)
+- **Debugger**: GPT-5.2 (raciocínio causal para bugs)
+
+#### Infraestrutura e Dados
+- **Database Architect**: GPT-5.1 Codex (SQL complexo e otimização)
+- **DevOps Engineer**: Grok Code Fast 1 (velocidade para logs e scripts)
+- **Performance Optimizer**: GPT-5.1 Codex Max (algoritmos e Big O)
+
 ### Sistema de Skills
 - **Core Skills**: Modos comportamentais, brainstorming, clean code
 - **Optional Skills**: Padrões de API, design de frontend, desenvolvimento de jogos, etc.
 - **Scripts de Validação**: Ferramentas automatizadas para verificação
+
+### Matriz de Modelos IA
+- **Alocação Estratégica**: Cada agente usa o modelo mais adequado para sua especialidade
+- **Configuração Centralizada**: Arquivo `cp-kit-models.yaml` com mapeamento completo
+- **Fallback Inteligente**: Sistema de backup para garantir disponibilidade
+- **Otimização de Custos**: Uso de modelos econômicos para tarefas repetitivas
 
 ### Instruções 2026
 Cada arquivo de instruções inclui:
@@ -113,6 +143,7 @@ Cada arquivo de instruções inclui:
 - [x] Migração completa do Antigravity para cp-kit
 - [x] Implementação de 20 agentes especializados
 - [x] Criação de 10 arquivos de instruções 2026
+- [x] Matriz de alocação de modelos IA (cp-kit-models.yaml)
 - [x] Publicação da versão 2.2.3 no NPM
 - [x] CLI tool funcional com comando `init`
 - [x] Integração com GitHub Copilot
@@ -144,5 +175,5 @@ A migração do Antigravity Toolkit para o GitHub Copilot Agent Toolkit represen
 
 ---
 
-*Documento gerado em 30 de janeiro de 2026 - cp-toolkit v2.2.3*</content>
+*Documento atualizado em 30 de janeiro de 2026 - cp-toolkit v2.2.3*</content>
 <parameter name="filePath">d:\01.Dev\cp-kit\PROJECT_MIGRATION.md

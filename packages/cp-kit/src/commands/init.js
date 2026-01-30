@@ -122,7 +122,13 @@ export async function initCommand(directory, options) {
     const instructionsContent = generateCopilotInstructions(config);
     await fs.writeFile(instructionsPath, instructionsContent);
 
-    // 6. Setup .vscode/mcp.json
+    // 6. Setup .github/cp-kit-models.yaml
+    spinner.text = 'Creating cp-kit-models.yaml...';
+    const modelsPath = path.join(targetDir, '.github', 'cp-kit-models.yaml');
+    const modelsContent = generateModelsConfig();
+    await fs.writeFile(modelsPath, modelsContent);
+
+    // 7. Setup .vscode/mcp.json
     spinner.text = 'Configuring MCP Server...';
     const vscodeDir = path.join(targetDir, '.vscode');
     await fs.ensureDir(vscodeDir);
@@ -164,7 +170,7 @@ export async function initCommand(directory, options) {
       JSON.stringify(mcpConfig, null, 2)
     );
 
-    // 7. Copy workflows to .github/workflows-copilot/ (optional reference)
+    // 8. Copy workflows to .github/workflows-copilot/ (optional reference)
     if (config.installEverything) {
       spinner.text = 'Copying workflows...';
       const workflowsSourceDir = path.join(templatesDir, 'workflows');
@@ -175,7 +181,7 @@ export async function initCommand(directory, options) {
       }
     }
 
-    // 8. Copy scripts to .github/scripts/
+    // 9. Copy scripts to .github/scripts/
     spinner.text = 'Copying scripts...';
     const scriptsSourceDir = path.join(templatesDir, 'scripts');
     const scriptsTargetDir = path.join(targetDir, '.github', 'scripts');
@@ -184,7 +190,7 @@ export async function initCommand(directory, options) {
       await fs.copy(scriptsSourceDir, scriptsTargetDir, { overwrite: true });
     }
 
-    // 9. Copy ARCHITECTURE.md to .github/
+    // 10. Copy ARCHITECTURE.md to .github/
     spinner.text = 'Copying architecture documentation...';
     const architectureSource = path.join(templatesDir, 'ARCHITECTURE.md');
     const architectureTarget = path.join(targetDir, '.github', 'ARCHITECTURE.md');
@@ -192,7 +198,7 @@ export async function initCommand(directory, options) {
       await fs.copy(architectureSource, architectureTarget, { overwrite: true });
     }
 
-    // 10. Copy rules to .github/rules/
+    // 11. Copy rules to .github/rules/
     spinner.text = 'Copying rules...';
     const rulesSourceDir = path.join(templatesDir, 'rules');
     const rulesTargetDir = path.join(targetDir, '.github', 'rules');
@@ -201,7 +207,7 @@ export async function initCommand(directory, options) {
       await fs.copy(rulesSourceDir, rulesTargetDir, { overwrite: true });
     }
 
-    // 11. Copy AGENTS.md to root (required by doctor)
+    // 12. Copy AGENTS.md to root (required by doctor)
     spinner.text = 'Copying AGENTS.md...';
     const agentsSource = path.join(templatesDir, 'AGENTS.md');
     const agentsTarget = path.join(targetDir, 'AGENTS.md');
@@ -227,8 +233,15 @@ export async function initCommand(directory, options) {
     console.log(chalk.dim('   │   ├── api-development.instructions.md'));
     console.log(chalk.dim('   │   └── github-actions.instructions.md'));
     console.log(chalk.dim('   ├── copilot-workflows/') + chalk.cyan('← Workflow templates'));
+    console.log(chalk.dim('   │   ├── architect-builder.workflow.md ') + chalk.yellow('← 🏗️ Protocol for complex tasks'));
+    console.log(chalk.dim('   │   ├── brainstorm.md'));
+    console.log(chalk.dim('   │   ├── create.md'));
+    console.log(chalk.dim('   │   ├── debug.md'));
+    console.log(chalk.dim('   │   ├── plan.md'));
+    console.log(chalk.dim('   │   └── orchestrate.md'));
     console.log(chalk.dim('   ├── scripts/          ') + chalk.cyan('← MCP server & utilities'));
     console.log(chalk.dim('   ├── rules/            ') + chalk.cyan('← Global AI rules'));
+    console.log(chalk.dim('   ├── cp-kit-models.yaml') + chalk.cyan('← AI model allocation matrix'));
     console.log(chalk.dim('   ├── ARCHITECTURE.md   ') + chalk.cyan('← System documentation'));
     console.log(chalk.dim('   └── copilot-instructions.md'));
     console.log(chalk.dim('   .vscode/'));
@@ -237,7 +250,8 @@ export async function initCommand(directory, options) {
     console.log(chalk.bold('\n🚀 Next Steps:'));
     console.log(`   1. ${chalk.cyan('Reload VS Code window')} to activate MCP servers`);
     console.log(`   2. Open Copilot Chat and try: ${chalk.yellow('@workspace use the orchestrator agent')}`);
-    console.log(`   3. Or try a workflow: ${chalk.yellow('/create a React component')}`);
+    console.log(`   3. Try the Architect-Builder Protocol: ${chalk.yellow('Read .github/copilot-workflows/architect-builder.workflow.md')}`);
+    console.log(`   4. Or try a workflow: ${chalk.yellow('/create a React component')}`);
     console.log(chalk.green('\n✅ Smart Context patterns applied to agents.'));
 
   } catch (error) {
@@ -741,6 +755,173 @@ Workflow templates in \`.github/copilot-workflows/\`:
 3. **Test coverage** - Write tests for new features
 4. **Security first** - Validate inputs, sanitize outputs
 `;
+}
+
+function generateModelsConfig() {
+  return `# .github/cp-kit-models.yaml
+# Matriz de Alocação de Modelos v3.0 (Full 20-Agent Suite)
+# Strategy: Architect-Builder Pattern (Hybrid) + Community Consensus 2026
+
+defaults:
+  temperature_planner: 0.1 # Raciocínio frio
+  temperature_executor: 0.3 # Criatividade controlada para código
+  fallback_model: "gpt-5.1-codex"
+
+agents:
+  # ==============================================================================
+  # 1. LIDERANÇA E ESTRATÉGIA (Pure Reasoning)
+  # ==============================================================================
+  orchestrator:
+    mode: "single"
+    model: "claude-opus-4.5"
+    reason: "Capacidade superior de manter o contexto de múltiplos agentes e passos."
+
+  product-manager:
+    mode: "single"
+    model: "gpt-5.2"
+    reason: "Equilíbrio ideal entre visão de negócios e viabilidade técnica."
+
+  product-owner:
+    mode: "single"
+    model: "gemini-3-pro" # (Preview)
+    reason: "Context window massiva para ingerir todo o histórico e backlog do produto."
+
+  project-planner:
+    mode: "single"
+    model: "gpt-5.2"
+    reason: "Lógica temporal robusta para cronogramas, dependências e caminho crítico."
+
+  # ==============================================================================
+  # 2. DESENVOLVIMENTO CORE (Architect-Builder Hybrid)
+  # ==============================================================================
+  backend-specialist:
+    mode: "hybrid"
+    planner:
+      model: "gpt-5.2"
+      task: "Arquitetura de API, segurança e modelagem de dados."
+    executor:
+      model: "gpt-5.2-codex"
+      task: "Implementação estrita de rotas e serviços com tipagem perfeita."
+
+  frontend-specialist:
+    mode: "hybrid"
+    planner:
+      model: "claude-opus-4.5"
+      task: "Definição de UX, Acessibilidade e Component Tree."
+    executor:
+      model: "claude-sonnet-4.5"
+      task: "Geração de React/CSS visualmente fiel e sem alucinações de layout."
+
+  mobile-developer:
+    mode: "hybrid"
+    planner:
+      model: "claude-opus-4.5"
+      task: "Arquitetura nativa vs híbrida e gerenciamento de estado complexo."
+    executor:
+      model: "claude-sonnet-4.5"
+      task: "Escrita de SwiftUI/Kotlin com sintaxe declarativa aninhada."
+
+  game-developer:
+    mode: "hybrid"
+    planner:
+      model: "gpt-5.2"
+      task: "Design de sistemas de jogo, física e loop principal."
+    executor:
+      model: "gpt-5.1-codex-max"
+      task: "Cálculos vetoriais pesados e otimização de C++/C#."
+
+  # ==============================================================================
+  # 3. INFRAESTRUTURA E OPERAÇÕES (High Cost Savings)
+  # ==============================================================================
+  devops-engineer:
+    mode: "hybrid"
+    planner:
+      model: "claude-opus-4.5"
+      task: "Estratégia de Cloud, segurança de pipelines e disaster recovery."
+    executor:
+      model: "grok-code-fast-1" # Economia extrema aqui
+      task: "Geração rápida de YAMLs, Dockerfiles e scripts Bash."
+
+  database-architect:
+    mode: "hybrid"
+    planner:
+      model: "gpt-5.2"
+      task: "Modelagem ER, normalização e estratégia de indexação."
+    executor:
+      model: "gpt-5.1-codex"
+      task: "Geração de SQL complexo, migrations e triggers."
+
+  security-auditor:
+    mode: "single"
+    model: "claude-opus-4.5"
+    reason: "Raciocínio paranoico necessário para auditoria (Red Teaming)."
+
+  penetration-tester:
+    mode: "hybrid"
+    planner:
+      model: "gpt-5.2"
+      task: "Planejamento de vetores de ataque e engenharia social."
+    executor:
+      model: "gpt-5.2-codex"
+      task: "Criação de exploits e scripts de teste de penetração."
+
+  # ==============================================================================
+  # 4. QUALIDADE E OTIMIZAÇÃO
+  # ==============================================================================
+  qa-automation-engineer:
+    mode: "hybrid"
+    planner:
+      model: "gpt-5.2"
+      task: "Estratégia de testes E2E e cobertura de cenários críticos."
+    executor:
+      model: "gpt-5.1-codex-mini" # (Preview)
+      task: "Escrita em massa de scripts Cypress/Playwright."
+
+  test-engineer:
+    mode: "single"
+    model: "gpt-5.1-codex-max"
+    reason: "Foco total em cobertura de testes unitários e mocks."
+
+  debugger:
+    mode: "single"
+    model: "claude-opus-4.5"
+    reason: "Melhor modelo para análise causal de logs e stack traces."
+
+  performance-optimizer:
+    mode: "hybrid"
+    planner:
+      model: "gpt-5.2"
+      task: "Profiling e identificação de gargalos algorítmicos."
+    executor:
+      model: "gpt-5.1-codex-max"
+      task: "Refatoração de código para redução de complexidade Big O."
+
+  # ==============================================================================
+  # 5. ESPECIALISTAS E PESQUISA
+  # ==============================================================================
+  code-archaeologist:
+    mode: "hybrid"
+    planner:
+      model: "gemini-3-pro" # (Preview)
+      task: "Leitura de todo o repositório legado para entender dependências."
+    executor:
+      model: "gpt-5.1-codex"
+      task: "Refatoração cirúrgica sem quebrar compatibilidade."
+
+  documentation-writer:
+    mode: "single"
+    model: "claude-sonnet-4.5"
+    reason: "Texto técnico mais natural, empático e bem formatado."
+
+  seo-specialist:
+    mode: "single"
+    model: "gemini-3-flash" # (Preview)
+    reason: "Acesso rápido a dados da web e tendências de busca em tempo real."
+
+  explorer-agent:
+    mode: "single"
+    model: "raptor-mini" # (Preview)
+    reason: "Pensamento lateral rápido e brainstorming divergente."`;
 }
 
 export default initCommand;
