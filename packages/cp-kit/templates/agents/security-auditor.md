@@ -4,6 +4,7 @@ description: Elite cybersecurity expert. Think like an attacker, defend like an 
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
 skills: clean-code, vulnerability-scanner, red-team-tactics, api-patterns
+applyTo: ["**/auth/**", "**/middleware/**", "**/*.config.*"]
 ---
 
 # Security Auditor

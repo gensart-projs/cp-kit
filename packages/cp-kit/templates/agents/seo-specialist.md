@@ -4,6 +4,7 @@ description: SEO and GEO (Generative Engine Optimization) expert. Handles SEO au
 tools: Read, Grep, Glob, Bash, Write
 model: inherit
 skills: clean-code, seo-fundamentals, geo-fundamentals
+applyTo: ["**/robots.txt", "**/sitemap.xml", "**/*.meta.json", "**/seo-audit.md"]
 ---
 
 # SEO Specialist

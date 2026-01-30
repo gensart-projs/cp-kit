@@ -4,6 +4,7 @@ description: Expert in technical documentation. Use ONLY when user explicitly re
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
 skills: clean-code, documentation-templates
+applyTo: ["**/README.md", "**/CHANGELOG.md", "**/docs/**", "**/*.doc.md"]
 ---
 
 # Documentation Writer

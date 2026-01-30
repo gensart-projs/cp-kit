@@ -17,6 +17,48 @@ Antigravity Kit is a modular system consisting of:
 
 ---
 
+## 📝 Template Standards
+
+All toolkit files MUST follow the strict metadata standard (YAML Frontmatter) to ensure proper indexing by GitHub Copilot and the CP-Toolkit CLI.
+
+### AGENTS (`/agents/*.md`)
+```yaml
+---
+name: agent-name        # lowercase-slug
+description: "..."     # Concise mandatory description
+version: 1.0           # Current version
+skills: skill-a, skill-b # Comma-separated list of primary skills
+---
+```
+
+### SKILLS (`/skills/**/SKILL.md`)
+```yaml
+---
+name: skill-name        # lowercase-slug
+description: "..."     # Detailed capability description
+version: 1.0           # Mandatory version tracking
+---
+```
+
+### INSTRUCTIONS (`/instructions/*.instructions.md`)
+```yaml
+---
+name: instruction-name
+description: "..."
+version: 1.0
+applyTo: "**/*.ext"    # Glob pattern for Copilot context
+---
+```
+
+### RULES (`/rules/GEMINI.md`)
+```yaml
+---
+trigger: always_on     # Activation trigger
+---
+```
+
+---
+
 ## 🏗️ Directory Structure
 
 ```plaintext

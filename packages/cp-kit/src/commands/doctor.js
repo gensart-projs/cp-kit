@@ -61,7 +61,7 @@ const CHECKS = [
     fix: 'Run: cp-kit init (with MCP option)'
   },
   {
-    name: 'Instructions have valid applyTo',
+    name: 'Instructions have valid frontmatter (applyTo, version)',
     check: async (dir) => {
       const instrDir = path.join(dir, '.github', 'instructions');
       if (!await fs.pathExists(instrDir)) return true;
@@ -69,13 +69,15 @@ const CHECKS = [
       for (const file of files.filter(f => f.endsWith('.instructions.md'))) {
         const content = await fs.readFile(path.join(instrDir, file), 'utf-8');
         if (!content.includes('applyTo:')) return false;
+        if (!content.includes('version:')) return false;
+        if (!content.includes('description:')) return false;
       }
       return true;
     },
-    fix: 'Add applyTo frontmatter to instruction files'
+    fix: 'Add version and description frontmatter to instruction files'
   },
   {
-    name: 'Agents have valid frontmatter',
+    name: 'Agents have complete frontmatter (name, description, skills)',
     check: async (dir) => {
       const agentsDir = path.join(dir, '.github', 'agents');
       if (!await fs.pathExists(agentsDir)) return true;
@@ -84,30 +86,33 @@ const CHECKS = [
         const content = await fs.readFile(path.join(agentsDir, file), 'utf-8');
         if (!content.startsWith('---')) return false;
         if (!content.includes('name:')) return false;
+        if (!content.includes('description:')) return false;
+        if (!content.includes('skills:')) return false;
+        if (!content.includes('applyTo:')) return false;
       }
       return true;
     },
-    fix: 'Add frontmatter with name: to agent files'
+    fix: 'Update agent files with full frontmatter (name, description, skills, applyTo)'
   }
 ];
 
 export async function doctorCommand() {
   const targetDir = process.cwd();
-  
+
   console.log('');
   console.log(chalk.bold.cyan('🩺 cp-kit Doctor'));
   console.log(chalk.gray('─'.repeat(50)));
   console.log(chalk.gray(`Checking: ${targetDir}`));
   console.log('');
-  
+
   let passed = 0;
   let failed = 0;
   let warnings = 0;
-  
+
   for (const check of CHECKS) {
     try {
       const result = await check.check(targetDir);
-      
+
       if (result) {
         console.log(chalk.green('  ✓ ') + check.name);
         passed++;
@@ -126,10 +131,10 @@ export async function doctorCommand() {
       failed++;
     }
   }
-  
+
   console.log('');
   console.log(chalk.gray('─'.repeat(50)));
-  
+
   if (failed === 0) {
     if (warnings > 0) {
       console.log(chalk.green.bold(`✓ All checks passed!`) + chalk.gray(` (${passed} passed, ${warnings} optional)`));

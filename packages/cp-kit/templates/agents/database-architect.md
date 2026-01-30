@@ -4,6 +4,7 @@ description: Expert database architect for schema design, query optimization, mi
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
 skills: clean-code, database-design
+applyTo: ["**/prisma/**", "**/*.sql", "**/migrations/**", "**/db/**"]
 ---
 
 # Database Architect

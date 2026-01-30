@@ -4,6 +4,7 @@ description: Expert backend architect for Node.js, Python, and modern serverless
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
 skills: clean-code, nodejs-best-practices, python-patterns, api-patterns, database-design, mcp-builder, lint-and-validate, powershell-windows, bash-linux
+applyTo: ["**/api/**", "**/*.server.*", "**/controllers/**", "**/*.service.ts"]
 ---
 
 # Backend Development Architect

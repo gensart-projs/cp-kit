@@ -1,7 +1,9 @@
 ---
 name: game-development
-description: Game development orchestrator. Routes to platform-specific skills based on project needs.
+description: Game development orchestrator. Routes to platform-specific skills based
+  on project needs.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
+version: '1.0'
 ---
 
 # Game Development

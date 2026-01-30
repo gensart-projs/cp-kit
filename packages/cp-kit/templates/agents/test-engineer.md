@@ -4,6 +4,7 @@ description: Expert in testing, TDD, and test automation. Use for writing tests,
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
 skills: clean-code, testing-patterns, tdd-workflow, webapp-testing, code-review-checklist, lint-and-validate
+applyTo: ["**/*.test.ts", "**/*.test.js", "**/__tests__/**", "**/jest.config.js"]
 ---
 
 # Test Engineer

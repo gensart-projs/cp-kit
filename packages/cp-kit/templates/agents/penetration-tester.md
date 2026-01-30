@@ -4,6 +4,7 @@ description: Expert in offensive security, penetration testing, red team operati
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
 skills: clean-code, vulnerability-scanner, red-team-tactics, api-patterns
+applyTo: ["**/security-audit/*.md", "**/*.pcap", "**/*.burp", "**/exploit.py"]
 ---
 
 # Penetration Tester

@@ -13,6 +13,8 @@ const AGENT_TEMPLATES = {
   specialist: (name, description, triggers) => `---
 name: ${name}
 description: ${description}
+version: 1.0
+skills: clean-code
 ---
 
 # ${name}
@@ -39,6 +41,8 @@ ${triggers.map(t => `- ${t} related tasks`).join('\n')}
   reviewer: (name, description, triggers) => `---
 name: ${name}
 description: ${description}
+version: 1.0
+skills: clean-code, qa-automation-engineer
 ---
 
 # ${name}
@@ -76,7 +80,7 @@ description: ${description}
 
 export async function addCommand(type, name, options) {
   const targetDir = process.cwd();
-  
+
   // Validate type
   const validTypes = ['agent', 'instruction'];
   if (!validTypes.includes(type)) {
@@ -84,7 +88,7 @@ export async function addCommand(type, name, options) {
     console.log(chalk.dim(`   Valid types: ${validTypes.join(', ')}`));
     return;
   }
-  
+
   // Check if cp-kit is initialized
   const githubDir = path.join(targetDir, '.github');
   if (!fs.existsSync(path.join(githubDir, 'copilot-instructions.md'))) {
@@ -92,9 +96,9 @@ export async function addCommand(type, name, options) {
     console.log(chalk.dim('   Run: cp-kit init'));
     return;
   }
-  
+
   console.log(chalk.bold.cyan(`\n➕ Adding ${type}: ${name}\n`));
-  
+
   switch (type) {
     case 'agent':
       await addAgent(githubDir, name, options);
@@ -107,12 +111,12 @@ export async function addCommand(type, name, options) {
 
 async function addAgent(githubDir, name, options) {
   const agentFile = path.join(githubDir, 'agents', `${name}.md`);
-  
+
   if (fs.existsSync(agentFile)) {
     console.log(chalk.yellow(`⚠️  Agent "${name}" already exists.`));
     return;
   }
-  
+
   const response = await prompts([
     {
       type: 'text',
@@ -136,30 +140,30 @@ async function addAgent(githubDir, name, options) {
       ]
     }
   ]);
-  
+
   if (!response.description) {
     console.log(chalk.yellow('Aborted.'));
     return;
   }
-  
+
   const triggers = response.triggers.split(',').map(t => t.trim());
   const content = AGENT_TEMPLATES[response.template](name, response.description, triggers);
-  
+
   await fs.ensureDir(path.dirname(agentFile));
   await fs.writeFile(agentFile, content);
-  
+
   console.log(chalk.green(`✅ Created agent: .github/agents/${name}.md`));
   console.log(chalk.dim(`   Invoke with @${name} in Copilot Chat`));
 }
 
 async function addInstruction(githubDir, name, options) {
   const instrFile = path.join(githubDir, 'instructions', `${name}.instructions.md`);
-  
+
   if (fs.existsSync(instrFile)) {
     console.log(chalk.yellow(`⚠️  Instruction "${name}" already exists.`));
     return;
   }
-  
+
   const response = await prompts([
     {
       type: 'text',
@@ -174,13 +178,16 @@ async function addInstruction(githubDir, name, options) {
       initial: `${name} coding guidelines`
     }
   ]);
-  
+
   if (!response.applyTo) {
     console.log(chalk.yellow('Aborted.'));
     return;
   }
-  
+
   const content = `---
+name: ${name}
+description: ${response.description}
+version: 1.0
 applyTo: "${response.applyTo}"
 ---
 
@@ -201,10 +208,10 @@ applyTo: "${response.applyTo}"
 ### Best Practices
 - [Add specific guidelines here]
 `;
-  
+
   await fs.ensureDir(path.dirname(instrFile));
   await fs.writeFile(instrFile, content);
-  
+
   console.log(chalk.green(`✅ Created instruction: .github/instructions/${name}.instructions.md`));
   console.log(chalk.dim(`   Will apply to: ${response.applyTo}`));
 }

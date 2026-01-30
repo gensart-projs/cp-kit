@@ -4,6 +4,7 @@ description: Expert in performance optimization, profiling, Core Web Vitals, and
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
 skills: clean-code, performance-profiling
+applyTo: ["**/*.profile.json", "**/lighthouse-report.json", "**/webpack-bundle-analyzer/**"]
 ---
 
 # Performance Optimizer
