@@ -1,4 +1,4 @@
-# cp-kit
+# cp-toolkit
 
 > GitHub Copilot Agent Toolkit - Initialize and manage AI agents for your project
 
@@ -6,10 +6,10 @@
 
 ```bash
 # Global install
-npm install -g @brainlifyai/cp-kit
+npm install -g cp-toolkit
 
 # Or use with npx
-npx @brainlifyai/cp-kit init
+npx cp-toolkit init
 ```
 
 ## Quick Start

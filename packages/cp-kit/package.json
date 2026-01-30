@@ -1,7 +1,7 @@
 {
-  "name": "@brainlifyai/cp-kit",
-  "version": "1.0.0",
-  "description": "Copilot Kit - AI Agent framework for GitHub Copilot, Claude, Gemini CLI, and other AI assistants",
+  "name": "cp-toolkit",
+  "version": "2.0.0",
+  "description": "Copilot Toolkit - AI Agent framework for GitHub Copilot, Claude, Gemini CLI, and other AI assistants",
   "keywords": [
     "ai-agents",
     "github-copilot",
