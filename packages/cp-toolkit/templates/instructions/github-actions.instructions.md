@@ -1,7 +1,6 @@
 ---
 name: github-actions
 description: Standards for GitHub Actions workflows including security, performance, and best practices.
-version: 1.0
 applyTo: ".github/workflows/**/*.yml,.github/workflows/**/*.yaml"
 ---
 
