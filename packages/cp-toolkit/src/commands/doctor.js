@@ -30,9 +30,14 @@ const CHECKS = [
       const agentsDir = path.join(dir, '.github', 'agents');
       if (!await fs.pathExists(agentsDir)) return false;
       const files = await fs.readdir(agentsDir);
-      return files.some(f => f.endsWith('.md'));
+      return files.some(f => f.endsWith('.agent.md') || f.endsWith('.md'));
     },
     fix: 'Run: cp-kit add agent <name>'
+  },
+  {
+    name: 'skills/ directory exists',
+    check: async (dir) => fs.pathExists(path.join(dir, '.github', 'skills')),
+    fix: 'Run: cp-kit init'
   },
   {
     name: 'instructions/ directory exists',
@@ -77,22 +82,22 @@ const CHECKS = [
     fix: 'Add version and description frontmatter to instruction files'
   },
   {
-    name: 'Agents have complete frontmatter (name, description, skills)',
+    name: 'Agents have complete frontmatter (name, description, capabilities)',
     check: async (dir) => {
       const agentsDir = path.join(dir, '.github', 'agents');
       if (!await fs.pathExists(agentsDir)) return true;
       const files = await fs.readdir(agentsDir);
-      for (const file of files.filter(f => f.endsWith('.md'))) {
+      for (const file of files.filter(f => f.endsWith('.agent.md'))) {
         const content = await fs.readFile(path.join(agentsDir, file), 'utf-8');
         if (!content.startsWith('---')) return false;
         if (!content.includes('name:')) return false;
         if (!content.includes('description:')) return false;
-        if (!content.includes('skills:')) return false;
-        if (!content.includes('applyTo:')) return false;
+        // Capabilities is the new standard (was skills)
+        if (!content.includes('capabilities:') && !content.includes('tools:')) return false; 
       }
       return true;
     },
-    fix: 'Update agent files with full frontmatter (name, description, skills, applyTo)'
+    fix: 'Update agent files with full frontmatter (name, description, capabilities, model)'
   }
 ];
 

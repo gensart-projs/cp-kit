@@ -103,11 +103,14 @@ export async function initCommand(directory, options) {
       'database-design',
       'testing-patterns',
       'deployment-procedures',
-      'architecture'
+      'architecture',
+      'brainstorming',
+      'clean-code',
+      'plan-writing'
     ];
 
     for (const skill of essentialSkills) {
-      const skillSourceDir = path.join(templatesDir, 'skills', 'optional', skill);
+      const skillSourceDir = path.join(templatesDir, 'skills', skill);
       if (fs.existsSync(skillSourceDir)) {
         const skillTargetDir = path.join(skillsTargetDir, skill);
         await fs.ensureDir(skillTargetDir);
@@ -127,10 +130,29 @@ export async function initCommand(directory, options) {
     const modelsTemplatePath = path.join(templatesDir, 'cp-kit-models.yaml');
     await fs.copy(modelsTemplatePath, modelsPath);
 
-    // 7. Setup .vscode/mcp.json
-    spinner.text = 'Configuring MCP Server...';
+    // 7. Setup .vscode/settings.json
+    spinner.text = 'Configuring VS Code settings...';
     const vscodeDir = path.join(targetDir, '.vscode');
     await fs.ensureDir(vscodeDir);
+    
+    const settingsPath = path.join(vscodeDir, 'settings.json');
+    let settings = {};
+    if (fs.existsSync(settingsPath)) {
+      try {
+        settings = JSON.parse(await fs.readFile(settingsPath, 'utf8'));
+      } catch (e) {
+        // ignore error
+      }
+    }
+
+    settings['chat.agent.skills.enabled'] = true;
+    // Suggest other useful settings for 2026
+    settings['github.copilot.chat.welcomeMessage'] = "always";
+
+    await fs.writeFile(settingsPath, JSON.stringify(settings, null, 2));
+
+    // 8. Setup .vscode/mcp.json
+    spinner.text = 'Configuring MCP Server...';
 
     const mcpConfig = {
       "mcpServers": {
@@ -152,14 +174,6 @@ export async function initCommand(directory, options) {
           ],
           "disabled": false,
           "autoApprove": []
-        },
-        "antigravity": {
-          "command": "node",
-          "args": [
-            "${workspaceFolder}/.github/scripts/mcp-server.js"
-          ],
-          "disabled": false,
-          "autoApprove": []
         }
       }
     };
@@ -169,7 +183,7 @@ export async function initCommand(directory, options) {
       JSON.stringify(mcpConfig, null, 2)
     );
 
-    // 8. Copy workflows to .github/workflows-copilot/ (optional reference)
+    // 9. Copy workflows to .github/workflows-copilot/ (optional reference)
     if (config.installEverything) {
       spinner.text = 'Copying workflows...';
       const workflowsSourceDir = path.join(templatesDir, 'workflows');

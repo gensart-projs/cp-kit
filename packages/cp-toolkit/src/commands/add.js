@@ -13,8 +13,11 @@ const AGENT_TEMPLATES = {
   specialist: (name, description, triggers) => `---
 name: ${name}
 description: ${description}
-version: 1.0
-skills: clean-code
+model: gpt-4o
+capabilities:
+  - clean-code
+handoffs:
+  - project-planner
 ---
 
 # ${name}
@@ -41,8 +44,12 @@ ${triggers.map(t => `- ${t} related tasks`).join('\n')}
   reviewer: (name, description, triggers) => `---
 name: ${name}
 description: ${description}
-version: 1.0
-skills: clean-code, qa-automation-engineer
+model: gpt-4o
+capabilities:
+  - clean-code
+  - qa-automation-engineer
+handoffs:
+  - project-planner
 ---
 
 # ${name}
@@ -78,11 +85,31 @@ skills: clean-code, qa-automation-engineer
 `
 };
 
+const SKILL_TEMPLATE = (name, description) => `---
+name: ${name}
+description: ${description}
+version: 1.0.0
+---
+
+# Skill: ${name}
+
+> ${description}
+
+## Context & Rules
+- [Rule 1]
+- [Rule 2]
+
+## Code Snippets
+\`\`\`javascript
+// Example code for this skill
+\`\`\`
+`;
+
 export async function addCommand(type, name, options) {
   const targetDir = process.cwd();
 
   // Validate type
-  const validTypes = ['agent', 'instruction'];
+  const validTypes = ['agent', 'instruction', 'skill'];
   if (!validTypes.includes(type)) {
     console.log(chalk.red(`❌ Unknown type: ${type}`));
     console.log(chalk.dim(`   Valid types: ${validTypes.join(', ')}`));
@@ -103,6 +130,9 @@ export async function addCommand(type, name, options) {
     case 'agent':
       await addAgent(githubDir, name, options);
       break;
+    case 'skill':
+      await addSkill(githubDir, name, options);
+      break;
     case 'instruction':
       await addInstruction(githubDir, name, options);
       break;
@@ -110,7 +140,7 @@ export async function addCommand(type, name, options) {
 }
 
 async function addAgent(githubDir, name, options) {
-  const agentFile = path.join(githubDir, 'agents', `${name}.md`);
+  const agentFile = path.join(githubDir, 'agents', `${name}.agent.md`);
 
   if (fs.existsSync(agentFile)) {
     console.log(chalk.yellow(`⚠️  Agent "${name}" already exists.`));
@@ -152,8 +182,39 @@ async function addAgent(githubDir, name, options) {
   await fs.ensureDir(path.dirname(agentFile));
   await fs.writeFile(agentFile, content);
 
-  console.log(chalk.green(`✅ Created agent: .github/agents/${name}.md`));
+  console.log(chalk.green(`✅ Created agent: .github/agents/${name}.agent.md`));
   console.log(chalk.dim(`   Invoke with @${name} in Copilot Chat`));
+}
+
+async function addSkill(githubDir, name, options) {
+  const skillFile = path.join(githubDir, 'skills', name, 'SKILL.md');
+
+  if (fs.existsSync(skillFile)) {
+    console.log(chalk.yellow(`⚠️  Skill "${name}" already exists.`));
+    return;
+  }
+
+  const response = await prompts([
+    {
+      type: 'text',
+      name: 'description',
+      message: 'Description (used for semantic loading):',
+      initial: `${name} helper`
+    }
+  ]);
+
+  if (!response.description) {
+    console.log(chalk.yellow('Aborted.'));
+    return;
+  }
+
+  const content = SKILL_TEMPLATE(name, response.description);
+
+  await fs.ensureDir(path.dirname(skillFile));
+  await fs.writeFile(skillFile, content);
+
+  console.log(chalk.green(`✅ Created skill: .github/skills/${name}/SKILL.md`));
+  console.log(chalk.dim(`   This skill will be loaded when you ask about "${response.description}"`));
 }
 
 async function addInstruction(githubDir, name, options) {
