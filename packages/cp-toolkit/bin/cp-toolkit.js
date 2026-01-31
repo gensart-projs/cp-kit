@@ -46,6 +46,7 @@ program
   .description('Initialize cp-kit in a directory (creates .github/ structure)')
   .option('-y, --yes', 'Skip prompts and use defaults')
   .option('-f, --force', 'Overwrite existing configuration')
+  .option('-g, --global', 'Install instructions globally to VS Code User Prompts directory')
   .action(initCommand);
 
 // cp-kit add <type> <name>

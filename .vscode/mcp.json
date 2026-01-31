@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${workspaceFolder}"
+      ],
+      "disabled": false,
+      "autoApprove": []
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "disabled": false,
+      "autoApprove": []
+    },
+    "antigravity": {
+      "command": "node",
+      "args": [
+        "${workspaceFolder}/.github/scripts/mcp-server.js"
+      ],
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}

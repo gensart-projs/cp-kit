@@ -1,6 +1,7 @@
 # Available Agents
 
-This project is equipped with specialized AI agents to assist with development. Invoke them using `@workspace` in Copilot Chat or by their specific names.
+This project is equipped with specialized AI Agent Personas to assist with development. 
+To activate an agent, simply mention their name (e.g., **@Orchestrator**) in your Copilot Chat prompt. The System Prompt will load their specific rules and capabilities.
 
 ## Core Agents
 

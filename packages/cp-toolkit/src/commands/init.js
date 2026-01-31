@@ -11,6 +11,7 @@
 
 import fs from 'fs-extra';
 import path from 'path';
+import os from 'os';
 import chalk from 'chalk';
 import ora from 'ora';
 import prompts from 'prompts';
@@ -20,10 +21,89 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+function getGlobalPromptsDir() {
+  const platform = os.platform();
+  const homeDir = os.homedir();
+  
+  if (platform === 'win32') {
+    return path.join(process.env.APPDATA, 'Code', 'User', 'prompts');
+  } else if (platform === 'darwin') {
+    return path.join(homeDir, 'Library', 'Application Support', 'Code', 'User', 'prompts');
+  } else {
+    // Linux and others
+    return path.join(homeDir, '.config', 'Code', 'User', 'prompts');
+  }
+}
+
+async function initGlobal(options, templatesDir) {
+  const targetDir = getGlobalPromptsDir();
+  console.log(chalk.bold.cyan('\n🌍 cp-toolkit - Installing Global Instructions\n'));
+  console.log(chalk.dim(`Target directory: ${targetDir}`));
+
+  if (!options.yes) {
+     const { confirm } = await prompts({
+      type: 'confirm',
+      name: 'confirm',
+      message: `Install instructions globally to VS Code User Data?`,
+      initial: true
+    });
+    if (!confirm) return;
+  }
+
+  const spinner = ora('Installing global instructions...').start();
+  
+  try {
+    // Check if Code/User exists (VS Code installed?)
+    if (!fs.existsSync(path.dirname(targetDir))) {
+      spinner.warn(chalk.yellow('VS Code User directory not found. Is VS Code installed?'));
+      const { create } = await prompts({
+        type: 'confirm',
+        name: 'create',
+        message: 'Create directory anyway?',
+        initial: true
+      });
+      if (!create) return;
+    }
+
+    await fs.ensureDir(targetDir);
+
+    // Copy instructions
+    // We flatten them: templates/instructions/*.md -> targetDir/*.md
+    const instructionsSourceDir = path.join(templatesDir, 'instructions');
+    const files = await fs.readdir(instructionsSourceDir);
+    
+    let count = 0;
+    for (const file of files) {
+      if (file.endsWith('.md')) {
+        await fs.copy(
+          path.join(instructionsSourceDir, file),
+          path.join(targetDir, file),
+          { overwrite: options.force }
+        );
+        count++;
+      }
+    }
+
+    spinner.succeed(chalk.green(`✨ Installed ${count} global instruction files!`));
+    console.log(chalk.bold('\n🚀 Next Steps:'));
+    console.log(`   1. Instructions are now available in ${chalk.cyan('ALL')} your projects.`);
+    console.log(`   2. Use ${chalk.yellow('Settings Sync')} in VS Code to sync them across machines.`);
+    
+  } catch (error) {
+    spinner.fail(chalk.red('❌ Failed to install global instructions'));
+    console.error(error);
+  }
+}
+
 export async function initCommand(directory, options) {
+  const templatesDir = path.join(__dirname, '../../templates');
+
+  if (options.global) {
+    return initGlobal(options, templatesDir);
+  }
+
   const targetDir = directory ? path.resolve(directory) : process.cwd();
   const dirName = path.basename(targetDir);
-  const templatesDir = path.join(__dirname, '../../templates');
 
   console.log(chalk.bold.cyan('\n🚀 cp-toolkit - GitHub Copilot Agent Toolkit\n'));
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Full Verification Suite - Antigravity Kit
+Full Verification Suite - Copilot Kit
 ==========================================
 
 Runs COMPLETE validation including all checks + performance + E2E.

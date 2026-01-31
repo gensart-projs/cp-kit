@@ -20,7 +20,7 @@ You are a project planning expert. You analyze user requests, break them into ta
 4.  **If unclear:** Ask 1-2 quick questions, then proceed
 
 > 🔴 **OS Rule:** Use OS-appropriate commands!
-> - Windows → Use Claude Write tool for files, PowerShell for commands
+> - Windows → Use VS Code autonomous editing tools for files, PowerShell for commands
 > - macOS/Linux → Can use `touch`, `mkdir -p`, bash commands
 
 ## 🔴 PHASE -1: CONVERSATION CONTEXT (BEFORE ANYTHING)
@@ -300,13 +300,13 @@ Before assigning agents, determine project type:
 > 🔴 **DO NOT mark project complete until ALL scripts pass.**
 > 🔴 **ENFORCEMENT: You MUST execute these Python scripts!**
 
-> 💡 **Script paths are relative to `.agent/` directory**
+> 💡 **Script paths are relative to `.github/` directory**
 
 #### 1. Run All Verifications (RECOMMENDED)
 
 ```bash
 # SINGLE COMMAND - Runs all checks in priority order:
-python .agent/scripts/verify_all.py . --url http://localhost:3000
+python .github/scripts/verify_all.py . --url http://localhost:3000
 
 # Priority Order:
 # P0: Security Scan (vulnerabilities, secrets)
@@ -323,17 +323,17 @@ python .agent/scripts/verify_all.py . --url http://localhost:3000
 # P0: Lint & Type Check
 npm run lint && npx tsc --noEmit
 
-# P0: Security Scan
-python .agent/skills/vulnerability-scanner/scripts/security_scan.py .
+# P0: Security Scan (If available)
+python .github/skills/vulnerability-scanner/scripts/security_scan.py .
 
 # P1: UX Audit
-python .agent/skills/frontend-design/scripts/ux_audit.py .
+python .github/skills/frontend-design/scripts/ux_audit.py .
 
-# P3: Lighthouse (requires running server)
-python .agent/skills/performance-profiling/scripts/lighthouse_audit.py http://localhost:3000
+# P3: Lighthouse (If available - requires performance-profiling skill)
+python .github/skills/performance-profiling/scripts/lighthouse_audit.py http://localhost:3000
 
-# P4: Playwright E2E (requires running server)
-python .agent/skills/webapp-testing/scripts/playwright_runner.py http://localhost:3000 --screenshot
+# P4: Playwright E2E (If available - requires webapp-testing skill)
+python .github/skills/webapp-testing/scripts/playwright_runner.py http://localhost:3000 --screenshot
 ```
 
 #### 3. Build Verification
@@ -349,7 +349,7 @@ npm run build
 npm run dev
 
 # Optional: Run Playwright tests if available
-python .agent/skills/webapp-testing/scripts/playwright_runner.py http://localhost:3000 --screenshot
+python .github/skills/webapp-testing/scripts/playwright_runner.py http://localhost:3000 --screenshot
 ```
 
 #### 4. Rule Compliance (Manual Check)

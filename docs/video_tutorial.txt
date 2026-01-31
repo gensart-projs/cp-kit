@@ -1,0 +1,235 @@
+Introduction: Why custom instructions matter
+Hey there friend, it's howdy duty time.
+Tim Warner here and I'm going to teach
+you how to use custom instructions in
+GitHub Copilot. I'm telling you, it was
+a great day when GitHub finally added
+the ability to add custom instructions
+that guides how the AI behaves and where
+we can put in all of our dev principles,
+our coding best practices, our security
+stuff, all of our dependency stuff
+without having to repeat over and over
+and over adnauseium. Now, if you're
+using command line interface or CLI
+coding assistants like Claude Code or
+OpenAI Codec CLI or even GitHub Copilot
+CLI, you're familiar with the metadata
+files that those agents create. Like I
+use Cloud Code for instance, and I ran a
+slashinit in Cloud Code and it created a
+really nice metadata manifest of what
+GitHub Copilot Chat extension setup verification
+this particular project is all about.
+So, you'll notice in GitHub Copilot
+chat, I'm assuming that you've got a
+license for GitHub Copilot. We're
+obviously in Visual Studio Code. We've
+installed the GitHub Copilot Chat
+extension. We've authenticated with our
+GitHub token. We're all ready to rock.
+Notice that it says right on the
+homepage, generate agent instructions to
+onboard AI onto your codebase. Now, you
+don't already have to have agent
+instructions from another, whether it's
+Cursor or Claude or whatever it is. You
+Auto-generate agent instructions from existing files
+can just have it go on its own
+intelligence. Let me show you how that
+works. I'm going to click the gear.
+Instead of using this text in the chat
+pane, which might be gone next week.
+Let's open up this configure chat gear
+and we can come down to generate agent
+instructions. And I want you to read
+with me what it's doing here. If I
+scroll up first, notice that GitHub
+copilot is attempting to source existing
+documents. It's looking for a claude.md.
+It's looking for windsurf rules. It's
+looking for client. So basically all of
+the competition, GitHub copilot is going
+to do the dry principle, the don't
+repeat yourself principle in software
+development and then it'll ride herd on
+top of that. What it will do, let me
+click keep all over here. And it didn't
+take long to do because I've already
+short pathathed it. It'll take a lot
+longer for it to create co-pilot
+instructions if you don't already have
+something there. But either way, you'll
+Understanding copilot-instructions.md (repo-level)
+wind up at the end of this process with
+a new file in your.github folder called
+copilot-instructions.mmd.
+Here's the sitch. Now, you also just as
+well can create this file manually, but
+it does have to be called
+copilot-instructions.
+It uses markdown format, and it allows
+you then to enumerate all of your coding
+requirements and preferences. Now, this
+file, assuming you don't get ignore it,
+will ride heard with the repo. So this
+is a repo level instructions file and
+it's going to be where you want to put
+all of the conventions and requirements
+and limitations and preferences that you
+and all of your repo contributors will
+use. You got that important distinction.
+Now it used to be that in settings JSON
+we could create our own user specific
+instructions but the way that GitHub
+copilot in VS Code seems to be involving
+now or evolving I should say is the use
+The DRY principle applied to AI coding assistance
+of dot instructions instead. So now
+let's go back to the gear and this time
+let's select instructions from the list.
+It says here do we want to create a new
+instruction file? Do we want to generate
+repo level agent instructions which
+we've already done or do we want to
+repurpose one set of instructions that
+might have come along with an extension
+we installed? Well, I'm going to create
+a new instruction file here. And notice
+that we can put this either in the repo,
+which might be of limited use if it's
+very personalized instructions, or you
+can put it in your user profile data.
+And the reason why the user data is
+important, you can see in the highlight,
+is that it's put under app data, roaming
+Creating language-specific .instructions files
+code, user prompts on Windows. And your
+setting sync will pick this up as long
+as you're including prompt data and
+instructions data in your setting sync.
+That means wherever you are in VS Code,
+you can have these custom specific
+instructions as well. I'm going to put
+this in the repo though to show you
+where it gets put by default. I'm going
+to call this PowerShell conventions.
+Press enter. And let me zoom in to show
+you what we've got here. First, we've
+got a YAML preamble here with an apply
+to field. This is asking for a glob
+pattern. So, if I do doublestar whoops,
+forward slashstar.ps1, PS1. This is
+going to apply recursively to any PS1
+file in the entire repo. Now, you can
+YAML glob patterns for file targeting (**/*.ps1)
+specify this by folder, by file name.
+The apply to line here can be as broad
+or as specific as you need it to be. The
+idea is we've got our repo level
+instructions and then very specific
+granular instructions that will only be
+applied when this glob pattern matches
+to true. And in the case of PowerShell,
+I might be doing module development. So
+I want to pick up an array of file
+types. I can do something like this.
+Doublestar slashstar.ps1,
+PSM1, PSD1, and so on and so forth. So
+that's the YAML prefix. Let me save my
+changes before I go any further. The
+second part is going to be the actual
+custom instructions. So the idea is if
+I'm ever operating on a PS1 file, use
+these instructions. Now, I want to point
+you to a useful GitHub repo. It's in the
+Awesome Copilot community repo walkthrough
+GitHub or it's called Awesome Copilot.
+This is a community contributed repo of
+prompts and instructions. Let me go down
+to instructions and let me do ATRLF and
+look for PowerShell. And sure enough,
+there is a PowerShell instructions file
+already here that we'll look at in raw
+view. And I'm just going to grab the
+markdown here. This is potentially going
+to save you a lot of manual work parsing
+through your dev docs. I mean, maybe you
+could use this as a base. You could use
+generative AI to combine this Microsoft
+provided option with your own dev docs,
+if that makes sense. Genai is super good
+at data synthesis. So, let me paste that
+in. So, on one hand, you might be
+thinking, Tim, this is bit overkill.
+Aren't I polluting the context and
+burning up a lot of tokens? That is a
+legit concern. So I would say that
+although this is a super robust
+PowerShell development guidelines
+instruction, we also want to think
+Balancing comprehensive vs. token-efficient instructions
+about, you know, are we using a
+sledgehammer when a very small mallet is
+required? Want to throw that in just in
+terms of best practices. So let me save
+that one more time. Start a new chat and
+I'm going to say actually I'll create a
+file and I'm going to call this create
+Azure RSVA.ps1.
+Going to make sure that it's in context
+down here. And I'm going to say create
+me an advanced PowerShell function that
+creates a fully optimized multi- region
+RS vault. Put sample data in the
+variables. I'll fix those later. Just to
+get it started, I want to do agent and
+let me override and use GPT41 here. Now,
+let's take a look at the references that
+GitHub Copilot is using. Notice that
+it's picking up our PowerShell
+convention instructions here. And that's
+worth saying that these instructions
+files have the format of your friendly
+name that you give it. Instructions.mmd.
+All right. And notice that we've got the
+global co-pilot instructions and the
+specific instructions. But my
+understanding is that in this case, in
+the case of any conflicts, your specific
+instructions are going to override any
+global instructions that are there. Let
+Live demo: PowerShell conventions in action
+me keep those changes. And we've got
+ourselves an advanced PowerShell
+function. And what I've got now is
+assurance that I'm using legal verbs.
+I'm using all of the community best
+practices as you can see here. Approved
+naming parameters up at the top, geo
+redundancy, diagnostic settings. I had
+actually forgotten about that. And then
+we have good uh quality of life best
+practices like error handling, verbose
+log streams, and returning a PS custom
+object for maximum flexibility. Nice.
+Well, that's exactly what we're talking
+about here with these instruction files.
+Now, again, this one was committed in
+the repo, but you can also put them into
+your user profile data in terms of their
+life cycle. It's finished the demo. Now,
+we'll come back to instructions. And
+notice if you hover over, you can copy
+it to another scope or move it to
+another scope. You can rename it. You
+can trash it if you don't need it
+anymore. Or if you actually click it,
+it'll open the source file directly. All
+right, that's the basic lay of the land
+with custom instructions in GitHub
+Copilot. Hope you found this tutorial
+useful. Let me know in the comments any
+other subjects you want with GitHub
+Copilot and beyond. And I will see you
+later. Take care.

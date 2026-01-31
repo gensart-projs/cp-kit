@@ -1,4 +1,4 @@
-# Antigravity Kit Architecture
+# Copilot Kit Architecture
 
 > Comprehensive AI Agent Capability Expansion Toolkit
 > 
@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-Antigravity Kit is a modular system consisting of:
+Copilot Kit is a modular system consisting of:
 
 - **20 Specialist Agents** - Role-based AI personas
 - **36 Skills** - Domain-specific knowledge modules (7 core + 29 optional)
@@ -50,7 +50,7 @@ applyTo: "**/*.ext"    # Glob pattern for Copilot context
 ---
 ```
 
-### RULES (`/rules/GEMINI.md`)
+### RULES (`/rules/AI_RULES.md`)
 ```yaml
 ---
 trigger: always_on     # Activation trigger
@@ -62,14 +62,14 @@ trigger: always_on     # Activation trigger
 ## 🏗️ Directory Structure
 
 ```plaintext
-.agent/
+.github/
 ├── ARCHITECTURE.md          # This file
 ├── agents/                  # 20 Specialist Agents
 ├── skills/
 │   ├── core/                # 7 Core Skills (always loaded)
 │   └── optional/            # 29 Optional Skills (on demand)
-├── workflows/               # 11 Slash Commands
-├── rules/                   # Global Rules (GEMINI.md)
+├── copilot-workflows/       # 11 Slash Commands
+├── rules/                   # Global Rules (AI_RULES.md)
 └── scripts/
     ├── mcp-server.js        # MCP Server for GitHub Copilot
     ├── checklist.py         # Quick validation
@@ -358,7 +358,7 @@ For details, see [scripts/README.md](scripts/README.md)
 | AI Assistant | Integration Method | Status |
 | ------------ | ------------------ | ------ |
 | **GitHub Copilot** | AGENTS.md + .github/copilot-instructions.md + MCP | ✅ Full |
-| **Gemini CLI** | .agent/rules/GEMINI.md | ✅ Full |
+| **Copilot CLI** | .github/rules/AI_RULES.md | ✅ Full |
 | **Claude** | AGENTS.md + MCP | ✅ Full |
 | **Cursor** | AGENTS.md | ✅ Full |
 | **OpenAI Codex** | AGENTS.md | ✅ Full |
@@ -373,8 +373,8 @@ The toolkit includes a custom MCP server that exposes:
 | **Tools** | `list_skills`, `load_skill` | Skill discovery and loading |
 | **Tools** | `list_workflows`, `execute_workflow` | Workflow execution |
 | **Tools** | `route_request` | Automatic agent routing |
-| **Resources** | `antigravity://architecture` | This documentation |
-| **Resources** | `antigravity://rules` | Base rules (GEMINI.md) |
+| **Resources** | `copilot://architecture` | This documentation |
+| **Resources** | `copilot://rules` | Base rules (AI_RULES.md) |
 | **Prompts** | `/{workflow}` | Slash commands as prompts |
 
 ### Configuration

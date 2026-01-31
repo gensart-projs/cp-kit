@@ -1,13 +1,14 @@
 {
   "name": "cp-toolkit",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Copilot Toolkit - Native AI Agents & Skills for GitHub Copilot (v2026)",
   "keywords": [
     "ai-agents",
     "github-copilot",
     "copilot",
     "gemini-cli",
-    "claude",
+    "agentic-workflow",
+    "mcp-server",
     "mcp",
     "model-context-protocol",
     "agent-toolkit"

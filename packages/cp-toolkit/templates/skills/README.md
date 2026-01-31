@@ -1,6 +1,6 @@
 # Skills Directory
 
-> Modular knowledge domains for the Antigravity Agent Toolkit
+> Modular knowledge domains for the Copilot Agent Toolkit
 
 ## Structure
 

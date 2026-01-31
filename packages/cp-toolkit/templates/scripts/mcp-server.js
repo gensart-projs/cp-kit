@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Antigravity Agent Toolkit - MCP Server
+ * Copilot Agent Toolkit - MCP Server
  * 
- * Model Context Protocol server that exposes the Antigravity toolkit
+ * Model Context Protocol server that exposes the Copilot toolkit
  * capabilities to AI assistants like GitHub Copilot.
  * 
  * Features:
@@ -283,7 +283,7 @@ async function loadWorkflow(workflowName) {
 }
 
 async function loadRules() {
-  const rulesPath = path.join(AGENT_ROOT, 'rules', 'GEMINI.md');
+  const rulesPath = path.join(AGENT_ROOT, 'rules', 'AI_RULES.md');
   const content = await readMarkdownFile(rulesPath);
   
   if (!content) {
@@ -293,7 +293,7 @@ async function loadRules() {
   const { frontmatter, body } = parseFrontmatter(content);
   
   return {
-    name: 'GEMINI',
+    name: 'AI_RULES',
     trigger: frontmatter.trigger || 'always_on',
     instructions: body,
   };
@@ -362,7 +362,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: 'list_agents',
-        description: 'List all available specialist agents in the Antigravity toolkit',
+        description: 'List all available specialist agents in the Copilot toolkit',
         inputSchema: {
           type: 'object',
           properties: {},
@@ -385,7 +385,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'list_skills',
-        description: 'List all available skills in the Antigravity toolkit',
+        description: 'List all available skills in the Copilot toolkit',
         inputSchema: {
           type: 'object',
           properties: {},
@@ -445,7 +445,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'load_rules',
-        description: 'Load the base rules (GEMINI.md) for the toolkit',
+        description: 'Load the base rules (AI_RULES.md) for the toolkit',
         inputSchema: {
           type: 'object',
           properties: {},
@@ -594,15 +594,15 @@ server.setRequestHandler(ListResourcesRequestSchema, async () => {
   return {
     resources: [
       {
-        uri: 'antigravity://architecture',
+        uri: 'copilot://architecture',
         name: 'Toolkit Architecture',
-        description: 'Complete architecture documentation for the Antigravity toolkit',
+        description: 'Complete architecture documentation for the ecosystem',
         mimeType: 'text/markdown',
       },
       {
-        uri: 'antigravity://rules',
+        uri: 'copilot://rules',
         name: 'Base Rules',
-        description: 'GEMINI.md base rules (always active)',
+        description: 'AI_RULES.md base rules (always active)',
         mimeType: 'text/markdown',
       },
     ],
@@ -613,7 +613,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   const { uri } = request.params;
   
   switch (uri) {
-    case 'antigravity://architecture': {
+    case 'copilot://architecture': {
       const content = await readMarkdownFile(path.join(AGENT_ROOT, 'ARCHITECTURE.md'));
       return {
         contents: [

@@ -1,7 +1,7 @@
 {
-  "name": "@antigravity/mcp-server",
+  "name": "@cp-toolkit/mcp-server",
   "version": "1.0.0",
-  "description": "MCP Server for the Antigravity Agent Toolkit",
+  "description": "MCP Server for the Copilot Agent Toolkit",
   "type": "module",
   "main": "mcp-server.js",
   "scripts": {
