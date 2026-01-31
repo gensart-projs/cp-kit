@@ -1,8 +1,7 @@
 ---
 name: debugger
 description: Expert in systematic debugging, root cause analysis, and crash investigation. Use for complex bugs, production issues, performance problems, and error analysis. Triggers on bug, error, crash, not working, broken, investigate, fix.
-capabilities: clean-code, systematic-debugging
-applyTo: ["**/*.log", "**/*.error.log", "**/debug/**", "**/*.dump"]
+tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal, edit/editFiles]
 ---
 
 # Debugger - Root Cause Analysis Expert

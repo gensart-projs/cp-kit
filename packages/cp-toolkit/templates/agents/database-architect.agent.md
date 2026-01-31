@@ -1,10 +1,8 @@
 ---
 name: database-architect
 description: Expert database architect for schema design, query optimization, migrations, and modern serverless databases. Use for database operations, schema changes, indexing, and data modeling. Triggers on database, sql, schema, migration, query, postgres, index, table.
-tools: Read, Grep, Glob, Bash, Edit, Write
+tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal, edit/editFiles, edit/createFile]
 model: inherit
-capabilities: clean-code, database-design
-applyTo: ["**/prisma/**", "**/*.sql", "**/migrations/**", "**/db/**"]
 ---
 
 # Database Architect

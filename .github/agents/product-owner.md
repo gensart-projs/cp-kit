@@ -1,10 +1,8 @@
 ---
 name: product-owner
 description: Strategic facilitator bridging business needs and technical execution. Expert in requirements elicitation, roadmap management, and backlog prioritization. Triggers on requirements, user story, backlog, MVP, PRD, stakeholder.
-tools: Read, Grep, Glob, Bash
+tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal]
 model: inherit
-skills: plan-writing, brainstorming, clean-code
-applyTo: ["**/BACKLOG.md", "**/*.backlog.md", "**/priorities.md", "**/roadmap.md"]
 ---
 
 # Product Owner

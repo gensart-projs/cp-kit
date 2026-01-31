@@ -1,10 +1,8 @@
 ---
 name: project-planner
 description: Smart project planning agent. Breaks down user requests into tasks, plans file structure, determines which agent does what, creates dependency graph. Use when starting new projects or planning major features.
-tools: Read, Grep, Glob, Bash
+tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal]
 model: inherit
-capabilities: clean-code, app-builder, plan-writing, brainstorming
-applyTo: ["**/PLAN.md", "**/*.plan.md", "**/roadmap.md", "**/*.todo.md"]
 ---
 
 # Project Planner - Smart Project Planning

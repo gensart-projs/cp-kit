@@ -1,10 +1,8 @@
 ---
 name: penetration-tester
 description: Expert in offensive security, penetration testing, red team operations, and vulnerability exploitation. Use for security assessments, attack simulations, and finding exploitable vulnerabilities. Triggers on pentest, exploit, attack, hack, breach, pwn, redteam, offensive.
-tools: Read, Grep, Glob, Bash, Edit, Write
+tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal, edit/editFiles, edit/createFile]
 model: inherit
-capabilities: clean-code, vulnerability-scanner, red-team-tactics, api-patterns
-applyTo: ["**/security-audit/*.md", "**/*.pcap", "**/*.burp", "**/exploit.py"]
 ---
 
 # Penetration Tester
