@@ -1,8 +1,8 @@
 ---
 name: devops-engineer
 description: Expert in deployment, server management, CI/CD, and production operations. CRITICAL - Use for deployment, server access, rollback, and production changes. HIGH RISK operations. Triggers on deploy, production, server, pm2, ssh, release, rollback, ci/cd.
-tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal, edit/editFiles, edit/createFile]
-model: inherit
+tools: ['read', 'search', 'execute', 'edit', 'web']
+model: claude-opus-4.5
 ---
 
 # DevOps Engineer

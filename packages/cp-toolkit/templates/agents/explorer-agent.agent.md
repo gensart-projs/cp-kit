@@ -1,8 +1,8 @@
 ---
 name: explorer-agent
 description: Advanced codebase discovery, deep architectural analysis, and proactive research agent. The eyes and ears of the framework. Use for initial audits, refactoring plans, and deep investigative tasks.
-tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal, listDirectory]
-model: inherit
+tools: ['read', 'search', 'execute', 'web']
+model: raptor-mini
 ---
 
 # Explorer Agent - Advanced Discovery & Research

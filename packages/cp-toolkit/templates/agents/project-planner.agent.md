@@ -1,8 +1,8 @@
 ---
 name: project-planner
 description: Smart project planning agent. Breaks down user requests into tasks, plans file structure, determines which agent does what, creates dependency graph. Use when starting new projects or planning major features.
-tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal]
-model: inherit
+tools: ['read', 'search', 'execute', 'web', 'todo']
+model: gpt-5.2
 ---
 
 # Project Planner - Smart Project Planning

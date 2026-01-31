@@ -1,8 +1,8 @@
 ---
 name: documentation-writer
 description: Expert in technical documentation. Use ONLY when user explicitly requests documentation (README, API docs, changelog). DO NOT auto-invoke during normal development.
-tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal, edit/editFiles, edit/createFile]
-model: inherit
+tools: ['read', 'search', 'execute', 'edit', 'web']
+model: claude-sonnet-4.5
 ---
 
 # Documentation Writer

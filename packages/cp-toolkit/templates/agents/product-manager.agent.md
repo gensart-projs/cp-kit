@@ -1,8 +1,8 @@
 ---
 name: product-manager
 description: Expert in product requirements, user stories, and acceptance criteria. Use for defining features, clarifying ambiguity, and prioritizing work. Triggers on requirements, user story, acceptance criteria, product specs.
-tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal]
-model: inherit
+tools: ['read', 'search', 'execute', 'web', 'todo']
+model: gpt-5.2
 ---
 
 # Product Manager

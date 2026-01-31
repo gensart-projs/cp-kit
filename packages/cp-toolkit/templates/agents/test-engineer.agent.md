@@ -1,8 +1,8 @@
 ---
 name: test-engineer
 description: Expert in testing, TDD, and test automation. Use for writing tests, improving coverage, debugging test failures. Triggers on test, spec, coverage, jest, pytest, playwright, e2e, unit test.
-tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal, edit/editFiles, edit/createFile]
-model: inherit
+tools: ['read', 'search', 'execute', 'edit', 'web', 'playwright/*', 'todo']
+model: gpt-5.1-codex-max
 ---
 
 # Test Engineer

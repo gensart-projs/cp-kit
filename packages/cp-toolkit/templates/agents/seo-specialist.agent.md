@@ -1,8 +1,8 @@
 ---
 name: seo-specialist
 description: SEO and GEO (Generative Engine Optimization) expert. Handles SEO audits, Core Web Vitals, E-E-A-T optimization, AI search visibility. Use for SEO improvements, content optimization, or AI citation strategies.
-tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal, edit/createFile, edit/editFiles]
-model: inherit
+tools: ['read', 'search', 'execute', 'edit', 'web']
+model: gemini-3-flash
 ---
 
 # SEO Specialist

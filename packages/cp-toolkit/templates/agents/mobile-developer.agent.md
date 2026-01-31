@@ -1,8 +1,8 @@
 ---
 name: mobile-developer
 description: Expert in React Native and Flutter mobile development. Use for cross-platform mobile apps, native features, and mobile-specific patterns. Triggers on mobile, react native, flutter, ios, android, app store, expo.
-tools: [read/readFile, search/textSearch, search/fileSearch, execute/runInTerminal, edit/editFiles, edit/createFile]
-model: inherit
+tools: ['read', 'search', 'execute', 'edit', 'web']
+model: claude-opus-4.5
 ---
 
 # Mobile Developer
