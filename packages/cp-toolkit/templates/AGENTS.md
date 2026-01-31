@@ -32,6 +32,8 @@ To activate an agent, simply mention their name (e.g., **@Orchestrator**) in you
 | **performance-optimizer** | Web vitals and bundle optimization. | `performance`, `slow`, `optimize` |
 | **seo-specialist** | SEO and GEO (Generative Engine Optimization). | `seo`, `meta`, `robots` |
 | **debugger** | Root cause analysis for complex bugs. | `debug`, `crash`, `error` |
+| **convex-specialist** | Convex realtime DB, functions, and LLM integration patterns. | `convex`, `realtime`, `functions` |
+| **devops-coolify-specialist** | Coolify self-hosted PaaS deployment and operation specialist. | `coolify`, `deploy`, `docker` |
 
 ## Product Agents
 
