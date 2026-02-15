@@ -2,7 +2,7 @@
 
 ## Visão Geral do Projeto
 
-Este documento descreve a natureza e o progresso da migração do **Antigravity Toolkit** para o **GitHub Copilot Agent Toolkit (cp-kit)**, um sistema avançado de agentes de IA especializados para desenvolvimento de software.
+Este documento descreve a natureza e o progresso da migração do **Antigravity Toolkit** para o **GitHub Copilot Agent Toolkit (cp-toolkit)**, um sistema avançado de agentes de IA especializados para desenvolvimento de software.
 
 ## Contexto Histórico
 
@@ -15,7 +15,7 @@ Com o avanço das capacidades do GitHub Copilot e a introdução dos padrões de
 ## Arquitetura Atual
 
 ### Sistema Multi-Agente
-O cp-kit implementa um sistema sofisticado de agentes especializados:
+O cp-toolkit implementa um sistema sofisticado de agentes especializados:
 
 - **20 Agentes Especializados**: Cada um focado em uma área específica do desenvolvimento
 - **Biblioteca de Skills**: Habilidades modulares reutilizáveis
@@ -140,7 +140,7 @@ Cada arquivo de instruções inclui:
 ## Status Atual (30 de Janeiro de 2026)
 
 ### ✅ Concluído
-- [x] Migração completa do Antigravity para cp-kit
+- [x] Migração completa do Antigravity para cp-toolkit
 - [x] Implementação de 20 agentes especializados
 - [x] Criação de 10 arquivos de instruções 2026
 - [x] Matriz de alocação de modelos IA (cp-kit-models.yaml)
@@ -164,7 +164,7 @@ Cada arquivo de instruções inclui:
 ## Impacto e Visão
 
 ### Impacto Atual
-O cp-kit revolucionou a forma como equipes de desenvolvimento utilizam IA, oferecendo uma experiência mais inteligente, colaborativa e produtiva. A migração do conceito "antigravity" para uma integração profunda com Copilot representa uma evolução natural das capacidades de IA no desenvolvimento de software.
+O cp-toolkit revolucionou a forma como equipes de desenvolvimento utilizam IA, oferecendo uma experiência mais inteligente, colaborativa e produtiva. A migração do conceito "antigravity" para uma integração profunda com Copilot representa uma evolução natural das capacidades de IA no desenvolvimento de software.
 
 ### Visão Futura
 O projeto visa se tornar o padrão de fato para toolkits de agentes de IA em desenvolvimento de software, oferecendo uma plataforma extensível e adaptável que cresce com as necessidades da comunidade de desenvolvedores.
@@ -175,5 +175,4 @@ A migração do Antigravity Toolkit para o GitHub Copilot Agent Toolkit represen
 
 ---
 
-*Documento atualizado em 30 de janeiro de 2026 - cp-toolkit v2.2.3*</content>
-<parameter name="filePath">d:\01.Dev\cp-kit\PROJECT_MIGRATION.md
+*Documento atualizado em 30 de janeiro de 2026 - cp-toolkit v2.2.3*

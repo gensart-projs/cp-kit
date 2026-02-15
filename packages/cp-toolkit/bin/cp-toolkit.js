@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
 /**
- * cp-kit - GitHub Copilot Agent Toolkit
+ * cp-toolkit - GitHub Copilot Agent Toolkit
  * 
  * Initialize and manage AI agents for GitHub Copilot.
  * 
  * Usage:
- *   npx cp-kit init              # Initialize in current directory
- *   npx cp-kit init my-project   # Initialize in new directory
- *   cp-kit add agent <name>      # Add a new agent
- *   cp-kit add instruction <name># Add a new instruction
- *   cp-kit list agents           # List available agents
- *   cp-kit list instructions     # List available instructions
- *   cp-kit doctor                # Check configuration
+ *   npx cp-toolkit init                # Initialize in current directory
+ *   npx cp-toolkit init my-project     # Initialize in new directory
+ *   cp-toolkit add agent <name>        # Add a new agent
+ *   cp-toolkit add instruction <name>  # Add a new instruction
+ *   cp-toolkit list agents             # List available agents
+ *   cp-toolkit list instructions       # List available instructions
+ *   cp-toolkit doctor                  # Check configuration
  * 
  * @version 1.0.0
  * @license MIT
@@ -40,38 +40,38 @@ program
   .description('GitHub Copilot Agent Toolkit - Initialize AI agents for your project')
   .version(packageJson.version);
 
-// cp-kit init [directory]
+// cp-toolkit init [directory]
 program
   .command('init [directory]')
-  .description('Initialize cp-kit in a directory (creates .github/ structure)')
+  .description('Initialize cp-toolkit in a directory (creates .github/ structure)')
   .option('-y, --yes', 'Skip prompts and use defaults')
   .option('-f, --force', 'Overwrite existing configuration')
   .option('-g, --global', 'Install instructions globally to VS Code User Prompts directory')
   .action(initCommand);
 
-// cp-kit add <type> <name>
+// cp-toolkit add <type> <name>
 program
   .command('add <type> <name>')
   .description('Add a new agent or instruction')
   .option('-t, --template <template>', 'Use a specific template')
   .action(addCommand);
 
-// cp-kit list [type]
+// cp-toolkit list [type]
 program
   .command('list [type]')
   .description('List available agents or instructions')
   .action((type = 'all') => listCommand(type));
 
-// cp-kit doctor
+// cp-toolkit doctor
 program
   .command('doctor')
-  .description('Check cp-kit configuration and diagnose issues')
+  .description('Check cp-toolkit configuration and diagnose issues')
   .action(doctorCommand);
 
 // Show help if no command provided
 if (process.argv.length === 2) {
   console.log('');
-  console.log(chalk.bold.cyan('  🤖 cp-kit - GitHub Copilot Agent Toolkit'));
+  console.log(chalk.bold.cyan('  🤖 cp-toolkit - GitHub Copilot Agent Toolkit'));
   console.log('');
   console.log(chalk.gray('  Initialize AI agents and instructions for GitHub Copilot'));
   console.log('');

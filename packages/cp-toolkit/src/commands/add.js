@@ -1,7 +1,7 @@
 /**
- * cp-kit add command
+ * cp-toolkit add command
  * 
- * Add new agents or instructions to a cp-kit project.
+ * Add new agents or instructions to a cp-toolkit project.
  */
 
 import fs from 'fs-extra';
@@ -116,11 +116,11 @@ export async function addCommand(type, name, options) {
     return;
   }
 
-  // Check if cp-kit is initialized
+  // Check if cp-toolkit is initialized
   const githubDir = path.join(targetDir, '.github');
   if (!fs.existsSync(path.join(githubDir, 'copilot-instructions.md'))) {
-    console.log(chalk.red('❌ cp-kit not initialized.'));
-    console.log(chalk.dim('   Run: cp-kit init'));
+    console.log(chalk.red('❌ cp-toolkit not initialized.'));
+    console.log(chalk.dim('   Run: cp-toolkit init'));
     return;
   }
 

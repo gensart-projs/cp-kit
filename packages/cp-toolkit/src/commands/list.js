@@ -1,5 +1,5 @@
 /**
- * cp-kit list command
+ * cp-toolkit list command
  * 
  * List available agents and instructions.
  */
@@ -12,10 +12,10 @@ export async function listCommand(type) {
   const targetDir = process.cwd();
   const githubDir = path.join(targetDir, '.github');
   
-  // Check if cp-kit is initialized
+  // Check if cp-toolkit is initialized
   if (!fs.existsSync(path.join(githubDir, 'copilot-instructions.md'))) {
-    console.log(chalk.red('❌ cp-kit not initialized.'));
-    console.log(chalk.dim('   Run: cp-kit init'));
+    console.log(chalk.red('❌ cp-toolkit not initialized.'));
+    console.log(chalk.dim('   Run: cp-toolkit init'));
     return;
   }
   

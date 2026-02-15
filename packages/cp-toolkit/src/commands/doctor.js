@@ -1,7 +1,7 @@
 /**
- * cp-kit doctor command
+ * cp-toolkit doctor command
  * 
- * Diagnose cp-kit configuration and suggest fixes.
+ * Diagnose cp-toolkit configuration and suggest fixes.
  */
 
 import fs from 'fs-extra';
@@ -12,17 +12,17 @@ const CHECKS = [
   {
     name: '.github/ directory exists',
     check: async (dir) => fs.pathExists(path.join(dir, '.github')),
-    fix: 'Run: cp-kit init'
+    fix: 'Run: cp-toolkit init'
   },
   {
     name: 'copilot-instructions.md exists',
     check: async (dir) => fs.pathExists(path.join(dir, '.github', 'copilot-instructions.md')),
-    fix: 'Run: cp-kit init'
+    fix: 'Run: cp-toolkit init'
   },
   {
     name: 'agents/ directory exists',
     check: async (dir) => fs.pathExists(path.join(dir, '.github', 'agents')),
-    fix: 'Run: cp-kit init'
+    fix: 'Run: cp-toolkit init'
   },
   {
     name: 'At least one agent defined',
@@ -32,17 +32,17 @@ const CHECKS = [
       const files = await fs.readdir(agentsDir);
       return files.some(f => f.endsWith('.agent.md') || f.endsWith('.md'));
     },
-    fix: 'Run: cp-kit add agent <name>'
+    fix: 'Run: cp-toolkit add agent <name>'
   },
   {
     name: 'skills/ directory exists',
     check: async (dir) => fs.pathExists(path.join(dir, '.github', 'skills')),
-    fix: 'Run: cp-kit init'
+    fix: 'Run: cp-toolkit init'
   },
   {
     name: 'instructions/ directory exists',
     check: async (dir) => fs.pathExists(path.join(dir, '.github', 'instructions')),
-    fix: 'Run: cp-kit init'
+    fix: 'Run: cp-toolkit init'
   },
   {
     name: 'At least one instruction defined',
@@ -52,18 +52,18 @@ const CHECKS = [
       const files = await fs.readdir(instrDir);
       return files.some(f => f.endsWith('.instructions.md'));
     },
-    fix: 'Run: cp-kit add instruction <name>'
+    fix: 'Run: cp-toolkit add instruction <name>'
   },
   {
     name: 'AGENTS.md exists at root',
     check: async (dir) => fs.pathExists(path.join(dir, 'AGENTS.md')),
-    fix: 'Run: cp-kit init'
+    fix: 'Run: cp-toolkit init'
   },
   {
     name: '.vscode/mcp.json exists',
     check: async (dir) => fs.pathExists(path.join(dir, '.vscode', 'mcp.json')),
     optional: true,
-    fix: 'Run: cp-kit init (with MCP option)'
+    fix: 'Run: cp-toolkit init (with MCP option)'
   },
   {
     name: 'Instructions have valid frontmatter (applyTo, version)',
@@ -105,7 +105,7 @@ export async function doctorCommand() {
   const targetDir = process.cwd();
 
   console.log('');
-  console.log(chalk.bold.cyan('🩺 cp-kit Doctor'));
+  console.log(chalk.bold.cyan('🩺 cp-toolkit Doctor'));
   console.log(chalk.gray('─'.repeat(50)));
   console.log(chalk.gray(`Checking: ${targetDir}`));
   console.log('');
@@ -147,7 +147,7 @@ export async function doctorCommand() {
       console.log(chalk.green.bold(`✓ All checks passed! (${passed}/${passed})`));
     }
     console.log('');
-    console.log(chalk.green('✨ cp-kit is healthy!'));
+    console.log(chalk.green('✨ cp-toolkit is healthy!'));
   } else {
     console.log(chalk.red.bold(`✗ ${failed} checks failed`) + chalk.gray(` (${passed} passed, ${warnings} optional)`));
     console.log('');

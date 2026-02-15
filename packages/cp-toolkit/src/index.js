@@ -1,9 +1,9 @@
 /**
- * cp-kit - Copilot Kit
+ * cp-toolkit - Copilot Kit
  * 
  * AI Agent framework for GitHub Copilot, Claude, Gemini CLI, and other AI assistants.
  * 
- * @module cp-kit
+ * @module cp-toolkit
  * @version 1.0.0
  */
 
